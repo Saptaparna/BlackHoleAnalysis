@@ -17,7 +17,7 @@ using std::cout;
 using std::endl;
 using std::istringstream;
 
-void makeStackedPlot_ST_2jet_inc(){
+void makeStackedPlot_ST_N4_inc(){
 
   gROOT->SetStyle("Plain");
   gStyle->SetErrorX(0);
@@ -34,16 +34,6 @@ void makeStackedPlot_ST_2jet_inc(){
   p_1->Draw();
   //p_2->Draw();
   p_1->cd();
-/*
-  double qcd_100_200 = 27540000.0*209.0/81703728.0;
-  double qcd_200_300 = 1735000.0*209.0/18718905.0;
-  double qcd_300_500 = 366800.0*209.0/20278243.0;
-  double qcd_500_700 = 29370.0*209.0/19664159.0;
-  double qcd_700_1000 = 6524.0*209.0/15356448.0;
-  double qcd_1000_1500 = 1064.0*209.0/4963895.0;
-  double qcd_1500_2000 = 121.5*209.0/3868886.0;
-  double qcd_2000_inf =  25.4*209.0/1961774.0;
-*/
 
   double qcd_100_200 = 27540000.0*209.0/80093092.0;
   double qcd_200_300 = 1735000.0*209.0/18717349.0;
@@ -56,10 +46,10 @@ void makeStackedPlot_ST_2jet_inc(){
 
   setTDRStyle();
 
-  THStack hs("hs","ST_2jet_inc [GeV]");
+  THStack hs("hs","ST_N4_inc [GeV]");
 
   TFile* file0 = TFile::Open("output_QCD_HT_100_200.root");
-  TH1F *h0 = (TH1F*)file0->Get("JetST/ST_2jet_inc");
+  TH1F *h0 = (TH1F*)file0->Get("AllST/ST_N4_inc");
   h0->Rebin(1);
   h0->GetXaxis()->SetRangeUser(800, 3500);
   h0->Scale(qcd_100_200); 
@@ -69,7 +59,7 @@ void makeStackedPlot_ST_2jet_inc(){
   hs.Add(h0);
 
   TFile* file1 = TFile::Open("output_QCD_HT_200_300.root");
-  TH1F *h1 = (TH1F*)file1->Get("JetST/ST_2jet_inc");
+  TH1F *h1 = (TH1F*)file1->Get("AllST/ST_N4_inc");
   h1->Rebin(1);
   h1->GetXaxis()->SetRangeUser(800, 3500);
   h1->Scale(qcd_200_300);
@@ -79,7 +69,7 @@ void makeStackedPlot_ST_2jet_inc(){
   hs.Add(h1);
 
   TFile* file2 = TFile::Open("output_QCD_HT_300_500.root");
-  TH1F *h2 = (TH1F*)file2->Get("JetST/ST_2jet_inc");
+  TH1F *h2 = (TH1F*)file2->Get("AllST/ST_N4_inc");
   h2->Rebin(1);
   h2->GetXaxis()->SetRangeUser(800, 3500);
   h2->Scale(qcd_300_500);
@@ -89,7 +79,7 @@ void makeStackedPlot_ST_2jet_inc(){
   hs.Add(h2);
 
   TFile* file3 = TFile::Open("output_QCD_HT_500_700.root");
-  TH1F *h3 = (TH1F*)file3->Get("JetST/ST_2jet_inc");
+  TH1F *h3 = (TH1F*)file3->Get("AllST/ST_N4_inc");
   h3->Rebin(1);
   h3->GetXaxis()->SetRangeUser(800, 3500);
   h3->Scale(qcd_500_700);
@@ -99,7 +89,7 @@ void makeStackedPlot_ST_2jet_inc(){
   hs.Add(h3);
 
   TFile* file4 = TFile::Open("output_QCD_HT_700_1000.root");
-  TH1F *h4 = (TH1F*)file4->Get("JetST/ST_2jet_inc");
+  TH1F *h4 = (TH1F*)file4->Get("AllST/ST_N4_inc");
   h4->Rebin(1);
   h4->GetXaxis()->SetRangeUser(800, 3500);
   h4->Scale(qcd_700_1000);
@@ -109,7 +99,7 @@ void makeStackedPlot_ST_2jet_inc(){
   hs.Add(h4);
 
   TFile* file5 = TFile::Open("output_QCD_HT_1000_1500.root");
-  TH1F *h5 = (TH1F*)file5->Get("JetST/ST_2jet_inc");
+  TH1F *h5 = (TH1F*)file5->Get("AllST/ST_N4_inc");
   h5->Rebin(1);
   h5->GetXaxis()->SetRangeUser(800, 3500);
   h5->Scale(qcd_1000_1500);
@@ -119,7 +109,7 @@ void makeStackedPlot_ST_2jet_inc(){
   hs.Add(h5);
 
   TFile* file6 = TFile::Open("output_QCD_HT_1500_2000.root");
-  TH1F *h6 = (TH1F*)file6->Get("JetST/ST_2jet_inc");
+  TH1F *h6 = (TH1F*)file6->Get("AllST/ST_N4_inc");
   h6->Rebin(1);
   h6->GetXaxis()->SetRangeUser(800, 3500);
   h6->Scale(qcd_1500_2000);
@@ -129,7 +119,7 @@ void makeStackedPlot_ST_2jet_inc(){
   hs.Add(h6);
 
   TFile* file7 = TFile::Open("output_QCD_HT_2000_inf.root");
-  TH1F *h7 = (TH1F*)file7->Get("JetST/ST_2jet_inc");
+  TH1F *h7 = (TH1F*)file7->Get("AllST/ST_N4_inc");
   h7->Rebin(1);
   h7->GetXaxis()->SetRangeUser(800, 3500);
   h7->Scale(qcd_2000_inf);
@@ -139,7 +129,6 @@ void makeStackedPlot_ST_2jet_inc(){
   hs.Add(h7);
 
   hs.Draw("HIST");
-  //hs.SetMaximum(300000.0);
   hs.SetMaximum(10000000.0);
   hs.SetMinimum(0.1);
   hs.GetXaxis()->SetRangeUser(800, 3500);
@@ -153,7 +142,7 @@ void makeStackedPlot_ST_2jet_inc(){
   hs.GetXaxis()->SetTitleSize(0.03);
 
   TFile* data = TFile::Open("histo_data_All.root");
-  TH1F *h8 = (TH1F*)data->Get("JetST/ST_2jet_inc");
+  TH1F *h8 = (TH1F*)data->Get("AllST/ST_N4_inc");
   h8->Rebin(1);
   h8->SetLineColor(kBlack);
   h8->SetMarkerStyle(20);
@@ -220,7 +209,7 @@ p_2->SetGridy();
 TH1F *h_ratio=(TH1F*)h8->Clone("h_ratio");
 h_ratio->SetLabelSize(0.05);
 h_ratio->SetTitleSize(0.10);
-h_ratio->SetTitle("; #bf{ST_2jet_inc [GeV]}");
+h_ratio->SetTitle("; #bf{ST_N4_inc [GeV]}");
 h_ratio->GetXaxis()->SetTitleOffset(1.1);
 h_ratio->GetXaxis()->SetTitleSize(0.10);
 h_ratio->GetYaxis()->SetTitleOffset(0.4);
@@ -257,7 +246,7 @@ h_ratio_Unc->SetFillColor(1);
 h_ratio_Unc->SetMarkerStyle(1);
 h_ratio_Unc->Draw("SAME E2");
 */
-c1.SaveAs("h_Stacked_ST_2jet_inc.pdf");
-c1.SaveAs("h_Stacked_ST_2jet_inc.png");
+c1.SaveAs("h_Stacked_ST_N4_inc.pdf");
+c1.SaveAs("h_Stacked_ST_N4_inc.png");
 
 }

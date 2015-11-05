@@ -17,24 +17,29 @@ using std::cout;
 using std::endl;
 using std::istringstream;
 
-void makeStackedPlot_ST_2jet_inc(){
+void makeStackedPlot_ST_N8_inc_Ratio(){
+
+  setTDRStyle();
 
   gROOT->SetStyle("Plain");
   gStyle->SetErrorX(0);
 
   TCanvas c1("c1","Stacked Histogram",10,10,700,800);
-  //TPad *p_2=new TPad("p_2", "p_2", 0, 0, 1, 0.35);
-  TPad *p_1=new TPad("p_1", "p_1", 0, 0.05, 1, 1);
-  //p_1->SetBottomMargin(0.005);
+  TPad *p_2=new TPad("p_2", "p_2", 0, 0, 1, 0.25);
+  TPad *p_1=new TPad("p_1", "p_1", 0, 0.25, 1, 1);
+  p_1->SetTopMargin(0.05);
+  p_1->SetBottomMargin(0.0);
   p_1->SetFillStyle(4000);
   p_1->SetFrameFillColor(0);
-  //p_2->SetFillStyle(4000);
-  //p_2->SetFrameFillColor(0);
+  p_2->SetTopMargin(0.0); 
+  p_2->SetFillStyle(4000); 
+  p_2->SetBottomMargin(0.25); 
+  p_2->SetFrameFillColor(0); 
   p_1->SetLogy();
   p_1->Draw();
-  //p_2->Draw();
+  p_2->Draw();
   p_1->cd();
-/*
+
   double qcd_100_200 = 27540000.0*209.0/81703728.0;
   double qcd_200_300 = 1735000.0*209.0/18718905.0;
   double qcd_300_500 = 366800.0*209.0/20278243.0;
@@ -43,9 +48,8 @@ void makeStackedPlot_ST_2jet_inc(){
   double qcd_1000_1500 = 1064.0*209.0/4963895.0;
   double qcd_1500_2000 = 121.5*209.0/3868886.0;
   double qcd_2000_inf =  25.4*209.0/1961774.0;
-*/
 
-  double qcd_100_200 = 27540000.0*209.0/80093092.0;
+/*  double qcd_100_200 = 27540000.0*209.0/80093092.0;
   double qcd_200_300 = 1735000.0*209.0/18717349.0;
   double qcd_300_500 = 366800.0*209.0/20086103.0;
   double qcd_500_700 = 29370.0*209.0/19542847.0;
@@ -53,15 +57,15 @@ void makeStackedPlot_ST_2jet_inc(){
   double qcd_1000_1500 = 1064.0*209.0/4963895.0;
   double qcd_1500_2000 = 121.5*209.0/3848411.0;
   double qcd_2000_inf =  25.4*209.0/1961774.0;
+*/
 
-  setTDRStyle();
-
-  THStack hs("hs","ST_2jet_inc [GeV]");
+  THStack hs("hs","ST_N8_inc [GeV]");
 
   TFile* file0 = TFile::Open("output_QCD_HT_100_200.root");
-  TH1F *h0 = (TH1F*)file0->Get("JetST/ST_2jet_inc");
-  h0->Rebin(1);
-  h0->GetXaxis()->SetRangeUser(800, 3500);
+  TH1F *h0 = (TH1F*)file0->Get("AllST/ST_N8_inc");
+  h0->Sumw2();
+  h0->Rebin(2);
+  h0->GetXaxis()->SetRangeUser(1000, 5500);
   h0->Scale(qcd_100_200); 
   h0->SetLineColor(kYellow);
   h0->SetFillColor(kYellow);
@@ -69,9 +73,10 @@ void makeStackedPlot_ST_2jet_inc(){
   hs.Add(h0);
 
   TFile* file1 = TFile::Open("output_QCD_HT_200_300.root");
-  TH1F *h1 = (TH1F*)file1->Get("JetST/ST_2jet_inc");
-  h1->Rebin(1);
-  h1->GetXaxis()->SetRangeUser(800, 3500);
+  TH1F *h1 = (TH1F*)file1->Get("AllST/ST_N8_inc");
+  h1->Sumw2();
+  h1->Rebin(2);
+  h1->GetXaxis()->SetRangeUser(1000, 5500);
   h1->Scale(qcd_200_300);
   h1->SetLineColor(kYellow);
   h1->SetFillColor(kYellow);
@@ -79,9 +84,10 @@ void makeStackedPlot_ST_2jet_inc(){
   hs.Add(h1);
 
   TFile* file2 = TFile::Open("output_QCD_HT_300_500.root");
-  TH1F *h2 = (TH1F*)file2->Get("JetST/ST_2jet_inc");
-  h2->Rebin(1);
-  h2->GetXaxis()->SetRangeUser(800, 3500);
+  TH1F *h2 = (TH1F*)file2->Get("AllST/ST_N8_inc");
+  h2->Sumw2();
+  h2->Rebin(2);
+  h2->GetXaxis()->SetRangeUser(1000, 5500);
   h2->Scale(qcd_300_500);
   h2->SetLineColor(kYellow);
   h2->SetFillColor(kYellow);
@@ -89,9 +95,10 @@ void makeStackedPlot_ST_2jet_inc(){
   hs.Add(h2);
 
   TFile* file3 = TFile::Open("output_QCD_HT_500_700.root");
-  TH1F *h3 = (TH1F*)file3->Get("JetST/ST_2jet_inc");
-  h3->Rebin(1);
-  h3->GetXaxis()->SetRangeUser(800, 3500);
+  TH1F *h3 = (TH1F*)file3->Get("AllST/ST_N8_inc");
+  h3->Sumw2();
+  h3->Rebin(2);
+  h3->GetXaxis()->SetRangeUser(1000, 5500);
   h3->Scale(qcd_500_700);
   h3->SetLineColor(kYellow);
   h3->SetFillColor(kYellow);
@@ -99,9 +106,10 @@ void makeStackedPlot_ST_2jet_inc(){
   hs.Add(h3);
 
   TFile* file4 = TFile::Open("output_QCD_HT_700_1000.root");
-  TH1F *h4 = (TH1F*)file4->Get("JetST/ST_2jet_inc");
-  h4->Rebin(1);
-  h4->GetXaxis()->SetRangeUser(800, 3500);
+  TH1F *h4 = (TH1F*)file4->Get("AllST/ST_N8_inc");
+  h4->Sumw2();
+  h4->Rebin(2);
+  h4->GetXaxis()->SetRangeUser(1000, 5500);
   h4->Scale(qcd_700_1000);
   h4->SetLineColor(kYellow);
   h4->SetFillColor(kYellow);
@@ -109,9 +117,10 @@ void makeStackedPlot_ST_2jet_inc(){
   hs.Add(h4);
 
   TFile* file5 = TFile::Open("output_QCD_HT_1000_1500.root");
-  TH1F *h5 = (TH1F*)file5->Get("JetST/ST_2jet_inc");
-  h5->Rebin(1);
-  h5->GetXaxis()->SetRangeUser(800, 3500);
+  TH1F *h5 = (TH1F*)file5->Get("AllST/ST_N8_inc");
+  h5->Sumw2();
+  h5->Rebin(2);
+  h5->GetXaxis()->SetRangeUser(1000, 5500);
   h5->Scale(qcd_1000_1500);
   h5->SetLineColor(kYellow);
   h5->SetFillColor(kYellow);
@@ -119,9 +128,10 @@ void makeStackedPlot_ST_2jet_inc(){
   hs.Add(h5);
 
   TFile* file6 = TFile::Open("output_QCD_HT_1500_2000.root");
-  TH1F *h6 = (TH1F*)file6->Get("JetST/ST_2jet_inc");
-  h6->Rebin(1);
-  h6->GetXaxis()->SetRangeUser(800, 3500);
+  TH1F *h6 = (TH1F*)file6->Get("AllST/ST_N8_inc");
+  h6->Sumw2();
+  h6->Rebin(2);
+  h6->GetXaxis()->SetRangeUser(1000, 5500);
   h6->Scale(qcd_1500_2000);
   h6->SetLineColor(kYellow);
   h6->SetFillColor(kYellow);
@@ -129,9 +139,10 @@ void makeStackedPlot_ST_2jet_inc(){
   hs.Add(h6);
 
   TFile* file7 = TFile::Open("output_QCD_HT_2000_inf.root");
-  TH1F *h7 = (TH1F*)file7->Get("JetST/ST_2jet_inc");
-  h7->Rebin(1);
-  h7->GetXaxis()->SetRangeUser(800, 3500);
+  TH1F *h7 = (TH1F*)file7->Get("AllST/ST_N8_inc");
+  h7->Sumw2();
+  h7->Rebin(2);
+  h7->GetXaxis()->SetRangeUser(1000, 5500);
   h7->Scale(qcd_2000_inf);
   h7->SetLineColor(kYellow);
   h7->SetFillColor(kYellow);
@@ -139,26 +150,22 @@ void makeStackedPlot_ST_2jet_inc(){
   hs.Add(h7);
 
   hs.Draw("HIST");
-  //hs.SetMaximum(300000.0);
-  hs.SetMaximum(10000000.0);
+  hs.SetMaximum(100000.0);
   hs.SetMinimum(0.1);
-  hs.GetXaxis()->SetRangeUser(800, 3500);
-  hs.GetXaxis()->SetTitle("ST with nJets >= 2 [GeV]");
-  hs.GetYaxis()->SetLabelSize(0.03);
-  hs.GetYaxis()->SetTitleSize(0.03);
-  hs.GetYaxis()->SetTitle("Events/GeV");
-  hs.GetXaxis()->SetTitleOffset(1.3);
-  hs.GetYaxis()->SetTitleOffset(1.2);
-  hs.GetXaxis()->SetLabelSize(0.03);
-  hs.GetXaxis()->SetTitleSize(0.03);
+  hs.GetXaxis()->SetRangeUser(1000, 5500);
+  hs.SetTitle("");
+  hs.GetYaxis()->SetTitle("Events/100 GeV");
+  hs.GetXaxis()->SetLabelSize(0.04);
+  hs.GetXaxis()->SetTitleSize(0.04);
 
   TFile* data = TFile::Open("histo_data_All.root");
-  TH1F *h8 = (TH1F*)data->Get("JetST/ST_2jet_inc");
-  h8->Rebin(1);
+  TH1F *h8 = (TH1F*)data->Get("AllST/ST_N8_inc");
+  h8->Sumw2();
+  h8->Rebin(2);
   h8->SetLineColor(kBlack);
   h8->SetMarkerStyle(20);
   h8->SetMarkerSize(1.0);
-  h8->GetXaxis()->SetRangeUser(800, 3500);
+  h8->GetXaxis()->SetRangeUser(1000, 5500);
   h8->Draw("SAME E");
 
   TH1F *h_AllMC=(TH1F*)h8->Clone("h_AllMC");
@@ -193,7 +200,7 @@ void makeStackedPlot_ST_2jet_inc(){
   h_AllMC_Unc->SetMarkerStyle(1);
   h_AllMC_Unc->Draw("SAME E2");
 
-  TLegend *leg1 = new TLegend(0.65,0.55,0.80,0.75,NULL,"brNDC");
+  TLegend *leg1 = new TLegend(0.65,0.38,0.90,0.80,NULL,"brNDC");
   leg1->SetBorderSize(0);
   leg1->SetTextSize(0.03);
   leg1->SetLineColor(1);
@@ -213,51 +220,51 @@ void makeStackedPlot_ST_2jet_inc(){
   text1->SetTextFont(42);
   text1->SetTextSizePixels(20);
   text1->Draw();
-/*
-p_2->cd();
-p_2->SetGridy();
 
-TH1F *h_ratio=(TH1F*)h8->Clone("h_ratio");
-h_ratio->SetLabelSize(0.05);
-h_ratio->SetTitleSize(0.10);
-h_ratio->SetTitle("; #bf{ST_2jet_inc [GeV]}");
-h_ratio->GetXaxis()->SetTitleOffset(1.1);
-h_ratio->GetXaxis()->SetTitleSize(0.10);
-h_ratio->GetYaxis()->SetTitleOffset(0.4);
-h_ratio->GetYaxis()->SetTitleSize(0.10);
-h_ratio->GetYaxis()->SetLabelSize(0.07);
-h_ratio->GetYaxis()->SetTitle("Data/MC Ratio  ");
-h_ratio->SetStats(kFALSE);
-h_ratio->Divide(h_AllMC);
-h_ratio->SetLineColor(kBlack);
-h_ratio->SetMarkerStyle(20);
-h_ratio->SetLabelSize(0.10);
-h_ratio->GetYaxis()->SetNdivisions(505);
-h_ratio->SetMinimum(-0.5);
-h_ratio->SetMaximum(2.5);
-h_ratio->GetXaxis()->SetRangeUser(800, 3500);
-h_ratio->Draw("xpe");
+  p_2->cd();
+  p_2->SetGridy();
 
-TF1 *fit_ratio = new TF1("fit_ratio","[0]*x + [1]", 800, 3500);
-fit_ratio->SetParLimits(0,0.0,0.00001);
-fit_ratio->SetParLimits(1,0.0, 1.2);
-fit_ratio->SetLineColor(kRed);
-fit_ratio->SetLineWidth(3);
-h_ratio->Fit("fit_ratio", "", "", 800, 3500);
+  TH1F *h_ratio=(TH1F*)h8->Clone("h_ratio");
+  h_ratio->SetLabelSize(0.05);
+  h_ratio->SetTitleSize(0.10);
+  h_ratio->SetTitle("; #bf{ST (all objects) with N >= 8 [GeV]}");
+  h_ratio->GetXaxis()->SetTitleOffset(1.1);
+  h_ratio->GetXaxis()->SetTitleSize(0.10);
+  h_ratio->GetYaxis()->SetTitleOffset(0.4);
+  h_ratio->GetYaxis()->SetTitleSize(0.10);
+  h_ratio->GetYaxis()->SetLabelSize(0.07);
+  h_ratio->GetYaxis()->SetTitle("Data/MC Ratio  ");
+  h_ratio->SetStats(kFALSE);
+  h_ratio->Divide(h_AllMC);
+  h_ratio->SetLineColor(kBlack);
+  h_ratio->SetMarkerStyle(20);
+  h_ratio->SetLabelSize(0.10);
+  h_ratio->GetYaxis()->SetNdivisions(505);
+  h_ratio->SetMinimum(-0.5);
+  h_ratio->SetMaximum(2.5);
+  h_ratio->GetXaxis()->SetRangeUser(1000, 5500);
+  h_ratio->Draw();
 
-TH1F *h_ratio_Unc=(TH1F*)h_ratio->Clone("h_ratio_Unc");
-for (int ibin = 1; ibin < h_ratio_Unc->GetNbinsX()+1; ibin++){
+  TF1 *fit_ratio = new TF1("fit_ratio","[0]*x + [1]", 1000, 5500);
+  fit_ratio->SetParLimits(0,0.0,0.00001);
+  fit_ratio->SetParLimits(1,0.0, 1.2);
+  fit_ratio->SetLineColor(kRed);
+  fit_ratio->SetLineWidth(3);
+  h_ratio->Fit("fit_ratio", "", "", 1000, 5500);
+
+  TH1F *h_ratio_Unc=(TH1F*)h_ratio->Clone("h_ratio_Unc");
+  for (int ibin = 1; ibin < h_ratio_Unc->GetNbinsX()+1; ibin++){
   h_ratio_Unc->SetBinError(ibin, (h_ratio->GetBinContent(ibin)*h_AllMC_Unc->GetBinError(ibin))/h_AllMC->GetBinContent(ibin));
-}
+  }
 
-gStyle->SetHatchesLineWidth(4);
-gStyle->SetErrorX(0.5);
-h_ratio_Unc->SetFillStyle(3005);
-h_ratio_Unc->SetFillColor(1);
-h_ratio_Unc->SetMarkerStyle(1);
-h_ratio_Unc->Draw("SAME E2");
-*/
-c1.SaveAs("h_Stacked_ST_2jet_inc.pdf");
-c1.SaveAs("h_Stacked_ST_2jet_inc.png");
+  gStyle->SetHatchesLineWidth(4);
+  gStyle->SetErrorX(0.5);
+  h_ratio_Unc->SetFillStyle(3005);
+  h_ratio_Unc->SetFillColor(1);
+  h_ratio_Unc->SetMarkerStyle(1);
+  h_ratio_Unc->Draw("SAME E2");
+
+  c1.SaveAs("h_Stacked_ST_N8_inc.pdf");
+  c1.SaveAs("h_Stacked_ST_N8_inc.png");
 
 }
