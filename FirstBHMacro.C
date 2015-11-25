@@ -16,6 +16,9 @@ void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
   fChain->SetBranchStatus("ST",1);
   fChain->SetBranchStatus("Multiplicity",1);
   fChain->SetBranchStatus("firedHLT_PFHT800_v2",1);
+  fChain->SetBranchStatus("passed_CSCTightHaloFilter", 1);
+  fChain->SetBranchStatus("passed_goodVertices", 1);
+  fChain->SetBranchStatus("passed_eeBadScFilter", 1); 
   fChain->SetBranchStatus("Met", 1);
   fChain->SetBranchStatus("NJets", 1);
   fChain->SetBranchStatus("NMuons", 1);
@@ -190,7 +193,7 @@ void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       n_start++;
       // Pass Trigger, filters, good vertices
-      //if (!firedHLT_PFHT800_v2 || !passed_CSCTightHaloFilter || !passed_goodVertices || !passed_eeBadScFilter) continue;
+      if (!firedHLT_PFHT800_v2 || !passed_CSCTightHaloFilter || !passed_goodVertices || !passed_eeBadScFilter) continue;
       n_trig++;
 
       njets      -> Fill(NJets);
@@ -498,8 +501,8 @@ void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
   N_vs_ST->Fill(etsum, n_et50, weight);
   multiplicity->Fill(n_et50,  weight);
   ST->Fill(etsum, weight);
-  //if(n_et50 >= 8 and etsum > 1000.0) cout << "Event number high multiplicity = " << evtno << " Lumi Section = " << lumiblock << " Run number " << runno << " with jets: " << n_et50 << " ST = " << etsum << " etsum  = MetEtsum + JetEtsum + EleEtsum + PhoEtsum + MuoEtsum "<< " , " << MetEtsum << " , "  << JetEtsum << " , " << EleEtsum << " , " << PhoEtsum << " , " << MuoEtsum << endl;
-  //if(etsum > 5000.0) cout << "Event number low multiplicity and high ST = " << evtno << " Lumi Section = " << lumiblock << " Run number " << runno << " with jets: " << n_et50 << " ST = " << etsum << " etsum  = MetEtsum + JetEtsum + EleEtsum + PhoEtsum + MuoEtsum "<< " , " << MetEtsum << " , "  << JetEtsum << " , " << EleEtsum << " , " << PhoEtsum << " , " << MuoEtsum << endl;
+  if(n_et50 >= 8 and etsum > 1000.0) cout << "Event number high multiplicity = " << evtno << " Lumi Section = " << lumiblock << " Run number " << runno << " with jets: " << n_et50 << " ST = " << etsum << " etsum  = MetEtsum + JetEtsum + EleEtsum + PhoEtsum + MuoEtsum "<< " , " << MetEtsum << " , "  << JetEtsum << " , " << EleEtsum << " , " << PhoEtsum << " , " << MuoEtsum << endl;
+  if(etsum > 5000.0) cout << "Event number low multiplicity and high ST = " << evtno << " Lumi Section = " << lumiblock << " Run number " << runno << " with jets: " << n_et50 << " ST = " << etsum << " etsum  = MetEtsum + JetEtsum + EleEtsum + PhoEtsum + MuoEtsum "<< " , " << MetEtsum << " , "  << JetEtsum << " , " << EleEtsum << " , " << PhoEtsum << " , " << MuoEtsum << endl;
   
   //if(etsum < 1000.0) continue;
 

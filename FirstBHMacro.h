@@ -237,11 +237,14 @@ FirstBHMacro::FirstBHMacro(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/QCD_HT-1000_1500_25ns.root"); 
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("ntuple_output_1.root");
+      //TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/QCD_HT-1000_1500_25ns.root"); 
       if (!f || !f->IsOpen()) {
-         f = new TFile("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/QCD_HT-1000_1500_25ns.root");
+         f = new TFile("ntuple_output_1.root");
+         //f = new TFile("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/QCD_HT-1000_1500_25ns.root");
       }
-      TDirectory * dir = (TDirectory*)f->Get("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/QCD_HT-1000_1500_25ns.root:/bhana");
+      TDirectory * dir = (TDirectory*)f->Get("ntuple_output_1.root:/bhana");
+      //TDirectory * dir = (TDirectory*)f->Get("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/QCD_HT-1000_1500_25ns.root:/bhana");
       dir->GetObject("t",tree);
    }
    Init(tree);
