@@ -7,11 +7,16 @@
 
 #ifndef FirstBHMacro_h
 #define FirstBHMacro_h
+#include <stdlib.h>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
 
 #include <TROOT.h>
 #include <TChain.h>
 #include <TFile.h>
-
+#include <TMath.h>
 // Header file for the classes stored in the TTree if any.
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
@@ -20,7 +25,7 @@ class FirstBHMacro {
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
-
+  
    // Declaration of leaf types
    Int_t           NJets;
    Float_t         JetE[18];   //[NJets]
@@ -58,12 +63,6 @@ public :
    Float_t         ST;
    Float_t         mBH;
    Float_t         Met;
-   Float_t         MetE;
-   Float_t         MetPx;
-   Float_t         MetPy;
-   Float_t         MetPz;
-   Float_t         MetPt;
-   Float_t         MetEt;
    Float_t         MetPhi;
    Float_t         Sphericity;
    Float_t         Jet[4];
@@ -110,23 +109,15 @@ public :
    Int_t           evtno;
    Int_t           lumiblock;
    Int_t           isRealData;
-   Bool_t          firedHLT_PFJet60_v2;
-   Bool_t          firedHLT_PFJet140_v2;
-   Bool_t          firedHLT_PFJet450_v2;
-   Bool_t          firedHLT_PFHT300_v1;
-   Bool_t          firedHLT_PFHT400_v1;
-   Bool_t          firedHLT_PFHT475_v2;
-   Bool_t          firedHLT_PFHT650_v2;
-   Bool_t          firedHLT_PFHT600_v2;
    Bool_t          firedHLT_PFHT800_v2;
-//@@@@@@@@@@@@@
-//  Functions @    
-//@@@@@@@@@@@@@
-double getdR(double eta1, double eta2, double phi1, double phi2){
-double deta = eta1-eta2;
-double dphi = phi1-phi2;
-return sqrt((deta*deta)+(dphi*dphi));
-}
+   Bool_t          passed_CSCTightHaloFilter;
+   Bool_t          passed_goodVertices;
+   Bool_t          passed_eeBadScFilter;
+   // function to calculate dR between two objects
+   float dR(float eta1, float phi1, float eta2, float phi2) {
+     return std::sqrt( ( eta1 - eta2 )*( eta1 - eta2 ) + std::pow(TMath::ATan2(TMath::Sin( phi1 - phi2), TMath::Cos(phi1-phi2)),2) );
+   }
+
    // List of branches
    TBranch        *b_NJets;   //!
    TBranch        *b_JetE;   //!
@@ -164,12 +155,6 @@ return sqrt((deta*deta)+(dphi*dphi));
    TBranch        *b_ST;   //!
    TBranch        *b_mBH;   //!
    TBranch        *b_Met;   //!
-   TBranch        *b_MetE;   //!
-   TBranch        *b_MetPx;   //!
-   TBranch        *b_MetPy;   //!
-   TBranch        *b_MetPz;   //!
-   TBranch        *b_MetPt;   //!
-   TBranch        *b_MetEt;   //!
    TBranch        *b_MetPhi;   //!
    TBranch        *b_Sphericity;   //!
    TBranch        *b_JetArr;   //!
@@ -216,25 +201,32 @@ return sqrt((deta*deta)+(dphi*dphi));
    TBranch        *b_evtno;   //!
    TBranch        *b_lumiblock;   //!
    TBranch        *b_isRealData;   //!
-   TBranch        *b_firedHLT_PFJet60_v2; //! 
-   TBranch        *b_firedHLT_PFJet140_v2; //!
-   TBranch        *b_firedHLT_PFJet450_v2; //!
-   TBranch        *b_firedHLT_PFHT300_v1;   //!
    TBranch        *b_firedHLT_PFHT400_v1;   //!
    TBranch        *b_firedHLT_PFHT475_v2;   //!
    TBranch        *b_firedHLT_PFHT600_v2;   //!
    TBranch        *b_firedHLT_PFHT650_v2;   //!
    TBranch        *b_firedHLT_PFHT800_v2;   //!
-
+   TBranch        *b_passed_CSCTightHaloFilter ;
+   TBranch        *b_passed_goodVertices       ;
+   TBranch        *b_passed_eeBadScFilter      ;
    FirstBHMacro(TTree *tree=0);
    virtual ~FirstBHMacro();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
-   virtual void     Loop(TString name, float weight);
+   virtual void     Loop(TString name, float weight, std::string jecUnc);
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
+   float JecUnc(double jetPt, double jetEta, std::string jecUnc);
+   void fillJECUncVector();
+   
+private:
+   std::ifstream file_;
+   std::vector<double> v_jecUnc_etaBinEdge_;
+   std::vector<double> v_jecUnc_pTBinEdge_;
+   std::vector<std::vector<double> > v_v_jecUncUp_;  
+   std::vector<std::vector<double> > v_v_jecUncDn_;
 };
 
 #endif
@@ -245,36 +237,12 @@ FirstBHMacro::FirstBHMacro(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      //TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("QCD_1000_inf_madgraph.root");
-      //TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("ntuple_output_13_9_1_n4h.root");
-      //TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("QCD_HT_2000_inf_25ns.root");
-      //TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_5/src/QCD_HT_100_200_25ns.root");
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("ntuple_output_148.root");
-      //TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_5/src/forBH2015/NTuple/BlackMax/BlackMaxLHArecord_BH1_BM_MD2000_MBH11000_n6_NTuple.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/QCD_HT-1000_1500_25ns.root"); 
       if (!f || !f->IsOpen()) {
-         //f = new TFile("QCD_1000_inf_madgraph.root");
-         //f = new TFile("ntuple_output_13_9_1_n4h.root");
-         //f = new TFile("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_5/src/QCD_HT_100_200_25ns.root");
-           f = new TFile("ntuple_output_148.root");
-         //f = new TFile("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_5/src/forBH2015/NTuple/BlackMax/BlackMaxLHArecord_BH1_BM_MD2000_MBH11000_n6_NTuple.root");
+         f = new TFile("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/QCD_HT-1000_1500_25ns.root");
       }
-      TDirectory * dir = (TDirectory*)f->Get("ntuple_output_148.root:/bhana");
-      //TDirectory * dir = (TDirectory*)f->Get("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_5/src/forBH2015/NTuple/BlackMax/BlackMaxLHArecord_BH1_BM_MD2000_MBH11000_n6_NTuple.root:/bhana");
+      TDirectory * dir = (TDirectory*)f->Get("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/QCD_HT-1000_1500_25ns.root:/bhana");
       dir->GetObject("t",tree);
-      /*TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/QCD_HT-2000_inf_25ns.root");
-      if (!f || !f->IsOpen()) {
-         f = new TFile("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/QCD_HT-2000_inf_25ns.root");
-      }
-      TDirectory * dir = (TDirectory*)f->Get("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/QCD_HT-2000_inf_25ns.root:/bhana");
-      dir->GetObject("t",tree);
-     */
-     /*
-     TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("ntuple_output_1.root");
-     if (!f || !f->IsOpen()) {
-       f = new TFile("ntuple_output_1.root");
-     }
-     TDirectory * dir = (TDirectory*)f->Get("ntuple_output_1.root:/bhana");
-     dir->GetObject("t",tree);*/
    }
    Init(tree);
 }
@@ -306,15 +274,6 @@ Long64_t FirstBHMacro::LoadTree(Long64_t entry)
 
 void FirstBHMacro::Init(TTree *tree)
 {
-   // The Init() function is called when the selector needs to initialize
-   // a new tree or chain. Typically here the branch addresses and branch
-   // pointers of the tree will be set.
-   // It is normally not necessary to make changes to the generated
-   // code, but the routine can be extended by the user if needed.
-   // Init() will be called many times when running on PROOF
-   // (once per file to be processed).
-
-   // Set branch addresses and branch pointers
    if (!tree) return;
    fChain = tree;
    fCurrent = -1;
@@ -356,12 +315,6 @@ void FirstBHMacro::Init(TTree *tree)
    fChain->SetBranchAddress("ST", &ST, &b_ST);
    fChain->SetBranchAddress("mBH", &mBH, &b_mBH);
    fChain->SetBranchAddress("Met", &Met, &b_Met);
-   fChain->SetBranchAddress("MetE", &MetE, &b_MetE);
-   fChain->SetBranchAddress("MetPx", &MetPx, &b_MetPx);
-   fChain->SetBranchAddress("MetPy", &MetPy, &b_MetPy);
-   fChain->SetBranchAddress("MetPz", &MetPz, &b_MetPz);
-   fChain->SetBranchAddress("MetPt", &MetPt, &b_MetPt);
-   fChain->SetBranchAddress("MetEt", &MetEt, &b_MetEt);
    fChain->SetBranchAddress("MetPhi", &MetPhi, &b_MetPhi);
    fChain->SetBranchAddress("Sphericity", &Sphericity, &b_Sphericity);
    fChain->SetBranchAddress("Jet", Jet, &b_JetArr);
@@ -408,42 +361,163 @@ void FirstBHMacro::Init(TTree *tree)
    fChain->SetBranchAddress("evtno", &evtno, &b_evtno);
    fChain->SetBranchAddress("lumiblock", &lumiblock, &b_lumiblock);
    fChain->SetBranchAddress("isRealData", &isRealData, &b_isRealData);
-   fChain->SetBranchAddress("firedHLT_PFJet60_v2", &firedHLT_PFJet60_v2, &b_firedHLT_PFJet60_v2);
-   fChain->SetBranchAddress("firedHLT_PFJet140_v2", &firedHLT_PFJet140_v2, &b_firedHLT_PFJet140_v2);
-   fChain->SetBranchAddress("firedHLT_PFJet450_v2", &firedHLT_PFJet450_v2, &b_firedHLT_PFJet450_v2);
-   fChain->SetBranchAddress("firedHLT_PFHT300_v1", &firedHLT_PFHT300_v1, &b_firedHLT_PFHT300_v1);
-   fChain->SetBranchAddress("firedHLT_PFHT400_v1", &firedHLT_PFHT400_v1, &b_firedHLT_PFHT400_v1);
-   fChain->SetBranchAddress("firedHLT_PFHT475_v2", &firedHLT_PFHT475_v2, &b_firedHLT_PFHT475_v2);
-   fChain->SetBranchAddress("firedHLT_PFHT600_v2", &firedHLT_PFHT600_v2, &b_firedHLT_PFHT600_v2);
-   fChain->SetBranchAddress("firedHLT_PFHT650_v2", &firedHLT_PFHT650_v2, &b_firedHLT_PFHT650_v2);
    fChain->SetBranchAddress("firedHLT_PFHT800_v2", &firedHLT_PFHT800_v2, &b_firedHLT_PFHT800_v2);
+   fChain->SetBranchAddress("passed_CSCTightHaloFilter", &passed_CSCTightHaloFilter, &b_passed_CSCTightHaloFilter);
+   fChain->SetBranchAddress("passed_goodVertices", &passed_goodVertices, &b_passed_goodVertices);
+   fChain->SetBranchAddress("passed_eeBadScFilter", &passed_eeBadScFilter, &b_passed_eeBadScFilter);
    Notify();
 }
 
 Bool_t FirstBHMacro::Notify()
 {
-   // The Notify() function is called when a new file is opened. This
-   // can be either for a new TTree in a TChain or when when a new TTree
-   // is started when using PROOF. It is normally not necessary to make changes
-   // to the generated code, but the routine can be extended by the
-   // user if needed. The return value is currently not used.
-
    return kTRUE;
 }
 
 void FirstBHMacro::Show(Long64_t entry)
 {
-// Print contents of entry.
-// If entry is not specified, print current entry
    if (!fChain) return;
    fChain->Show(entry);
 }
 Int_t FirstBHMacro::Cut(Long64_t entry)
 {
-// This function may be called from Loop.
-// returns  1 if entry is accepted.
-// returns -1 otherwise.
-cout<<"HEY! SEE ENTRIES = "<<entry<<endl;
    return 1;
 }
+
+void FirstBHMacro::fillJECUncVector()
+{
+  ifstream file_;
+  file_.open("/afs/cern.ch/user/s/sapta/BlackHoleAnalysis/CMSSW_7_4_5/src/AnalysisScripts/QCDTest_SouvikParametrization/Summer15_25nsV6_MC_Uncertainty_AK4PFchs.txt");
+  std::cout<<"opened file"<<std::endl;
+ 
+  unsigned int i_eta=0;
+  bool first=true;
+  std::string s;
+  while (!file_.eof() && i_eta<40)
+  {
+    getline(file_, s);
+    std::stringstream ss(s);
+    std::vector<std::string> line;
+    while (ss)
+    {
+      std::string number;
+      if (!getline(ss, number, ' ')) break;
+      line.push_back(number);
+    }
+    
+    double etaBinEdge=atof(line.at(1).c_str());
+    v_jecUnc_etaBinEdge_.push_back(etaBinEdge);
+   
+    std::vector <double> v_jecUncUp;
+    std::vector <double> v_jecUncDn; 
+    for(unsigned int i=0; i<=43; ++i)
+    {
+      double pTBinEdge = atof(line.at(3*i+3).c_str());
+      double jecUp = atof(line.at(3*i+4).c_str());
+      double jecDn = atof(line.at(3*i+5).c_str());
+      if (first) v_jecUnc_pTBinEdge_.push_back(pTBinEdge);
+      v_jecUncUp.push_back(jecUp);
+      v_jecUncDn.push_back(jecDn);
+    }
+    v_v_jecUncUp_.push_back(v_jecUncUp);
+    v_v_jecUncDn_.push_back(v_jecUncDn);
+    
+    first=false;
+    ++i_eta;
+  }
+  
+}
+
+Float_t FirstBHMacro::JecUnc(double jetpT, double jetEta, std::string jecUnc)
+{
+  if (jetpT<10.0 || fabs(jetEta)>5.4) {return -999;}
+
+  double corr=-999;
+  unsigned int i_eta=0;
+  while (corr==-999 && i_eta<40)
+  {
+    if (jetEta < v_jecUnc_etaBinEdge_.at(i_eta))
+    {
+      unsigned int i_pT=0;
+      while (corr==-999 && i_pT<43)
+      {
+        if (jetpT < v_jecUnc_pTBinEdge_.at(i_pT+1))
+        {
+          if (jecUnc=="JecUp") corr = v_v_jecUncUp_.at(i_eta).at(i_pT);
+          if (jecUnc=="JecDown") corr = v_v_jecUncDn_.at(i_eta).at(i_pT);
+          if (jecUnc=="Default") corr = 0.0;
+        }
+        else if (jetpT >= v_jecUnc_pTBinEdge_.at(43))
+        {
+          if (jecUnc=="JecUp") corr = v_v_jecUncUp_.at(i_eta).at(43);
+          if (jecUnc=="JecDown") corr = v_v_jecUncDn_.at(i_eta).at(43);
+          if (jecUnc=="Default") corr = 0.0;
+        }
+        ++i_pT;
+      }
+    }
+    ++i_eta;
+  }
+  
+  return corr;
+}
+/*
+void FirstBHMacro::openJECFile()
+{
+  file_.open("/afs/cern.ch/user/s/sapta/BlackHoleAnalysis/CMSSW_7_4_5/src/AnalysisScripts/Summer15_25nsV6_MC_Uncertainty_AK4PFchs.txt");
+}
+
+
+Float_t FirstBHMacro::JecUnc(double jetPt, double jetEta, std::string jecUnc)
+{
+  if (jetPt<10.0 || fabs(jetEta)>5.4) return -999;
+
+  float jetEtalow;
+  float jetEtahigh;
+  float corr=-999;
+
+  std::string s;
+  while (!file_.eof() && corr==-999)
+  {
+    if (!getline(file_, s)) break;
+
+    std::stringstream ss(s);
+    std::vector<std::string> line;
+    while (ss)
+    {
+      std::string number;
+      if (!getline(ss, number, ' ')) break;
+      line.push_back(number);
+    }
+    jetEtalow = atof(line.at(0).c_str());
+    jetEtahigh = atof(line.at(1).c_str());
+    if(jetEta>=jetEtalow && jetEta<jetEtahigh)
+    {
+      corr = -999;
+      int i=0;
+      while (i<43)
+      {
+        if ((jetPt>=atof(line.at(3*i+3).c_str()) && jetPt<=atof(line.at(3*i+6).c_str())))
+        {
+          if(jecUnc=="JecUp") corr = atof(line.at(3*i+4).c_str());
+          if(jecUnc=="JecDown") corr = atof(line.at(3*i+5).c_str());
+          if(jecUnc=="Default") corr = 0.0;
+        }
+      else if (jetPt>=atof(line.at(132).c_str()))
+        {
+          if(jecUnc=="JecUp") corr = atof(line.at(133).c_str());
+          if(jecUnc=="JecDown") corr = atof(line.at(134).c_str());
+          if(jecUnc=="Default") corr = 0.0;
+        }
+        ++i;
+      }
+
+    }
+
+  }
+
+  file_.clear();
+  file_.seekg(0, ios::beg);
+  return corr;
+}
+*/
 #endif // #ifdef FirstBHMacro_cxx

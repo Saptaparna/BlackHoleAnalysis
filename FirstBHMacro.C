@@ -1,57 +1,79 @@
 #define FirstBHMacro_cxx
+#include "FirstBHMacro.h"
 #include <iostream>
 #include <iomanip>
 #include <fstream>
-#include "FirstBHMacro.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
 using namespace std;
-void FirstBHMacro::Loop(TString name, float weight)
+void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
 {
-//@@@@@@@@@@@@@@@@@@@@
-//  SET BRANCHES     @    
-//@@@@@@@@@@@@@@@@@@@@
-fChain->SetBranchStatus("*",0);
-fChain->SetBranchStatus("ST",1);
-fChain->SetBranchStatus("Multiplicity",1);
-fChain->SetBranchStatus("firedHLT_PFJet60_v2",1);
-fChain->SetBranchStatus("firedHLT_PFJet140_v2",1);
-fChain->SetBranchStatus("firedHLT_PFJet450_v2",1);
-fChain->SetBranchStatus("firedHLT_PFHT300_v1",1);
-fChain->SetBranchStatus("firedHLT_PFHT400_v1",1);
-fChain->SetBranchStatus("firedHLT_PFHT475_v2",1);
-fChain->SetBranchStatus("firedHLT_PFHT600_v2",1);
-fChain->SetBranchStatus("firedHLT_PFHT650_v2",1);
-fChain->SetBranchStatus("firedHLT_PFHT800_v2",1);
-fChain->SetBranchStatus("Met", 1);
-fChain->SetBranchStatus("NJets", 1);
-fChain->SetBranchStatus("NMuons", 1);
-fChain->SetBranchStatus("NElectrons", 1);
-fChain->SetBranchStatus("NPhotons", 1);
-fChain->SetBranchStatus("JetPt", 1);
-fChain->SetBranchStatus("JetPx", 1);
-fChain->SetBranchStatus("JetPy", 1);
-fChain->SetBranchStatus("JetPz", 1);
-fChain->SetBranchStatus("JetE", 1);
-fChain->SetBranchStatus("JetEt", 1);
-fChain->SetBranchStatus("JetEta",1);
-fChain->SetBranchStatus("JetPhi",1);
-fChain->SetBranchStatus("ElePt",1);
-fChain->SetBranchStatus("EleEt",1);
-fChain->SetBranchStatus("EleEta",1);
-fChain->SetBranchStatus("PhPt",1);
-fChain->SetBranchStatus("PhEt",1);
-fChain->SetBranchStatus("PhEta",1);
-fChain->SetBranchStatus("MuPt",1);
-fChain->SetBranchStatus("MuEt",1);
-fChain->SetBranchStatus("MuEta",1);
-fChain->SetBranchStatus("runno", 1);
-fChain->SetBranchStatus("evtno", 1);
-fChain->SetBranchStatus("lumiblock", 1);
-//@@@@@@@@@@@@@@@@@@@@
-//    Histograms     @    
-//@@@@@@@@@@@@@@@@@@@@
+  //@@@@@@@@@@@@@@@@@@@@
+  //  SET BRANCHES     @    
+  //@@@@@@@@@@@@@@@@@@@@
+  fChain->SetBranchStatus("*",0);
+  fChain->SetBranchStatus("ST",1);
+  fChain->SetBranchStatus("Multiplicity",1);
+  fChain->SetBranchStatus("firedHLT_PFHT800_v2",1);
+  fChain->SetBranchStatus("Met", 1);
+  fChain->SetBranchStatus("NJets", 1);
+  fChain->SetBranchStatus("NMuons", 1);
+  fChain->SetBranchStatus("NElectrons", 1);
+  fChain->SetBranchStatus("NPhotons", 1);
+  fChain->SetBranchStatus("JetPt", 1);
+  fChain->SetBranchStatus("JetPx", 1);
+  fChain->SetBranchStatus("JetPy", 1);
+  fChain->SetBranchStatus("JetPz", 1);
+  fChain->SetBranchStatus("JetE", 1);
+  fChain->SetBranchStatus("JetEt", 1);
+  fChain->SetBranchStatus("JetEta",1);
+  fChain->SetBranchStatus("JetPhi",1);
+  fChain->SetBranchStatus("ElePt",1);
+  fChain->SetBranchStatus("EleEt",1);
+  fChain->SetBranchStatus("EleEta",1);
+  fChain->SetBranchStatus("PhPt",1);
+  fChain->SetBranchStatus("PhEt",1);
+  fChain->SetBranchStatus("PhEta",1);
+  fChain->SetBranchStatus("MuPt",1);
+  fChain->SetBranchStatus("MuEt",1);
+  fChain->SetBranchStatus("MuEta",1);
+  fChain->SetBranchStatus("runno", 1);
+  fChain->SetBranchStatus("evtno", 1);
+  fChain->SetBranchStatus("lumiblock", 1);
+
+  //variables associated with the output tree
+  TFile *outputFile;
+  TTree *outputTree;
+  double ST_mul2 = 0.0;
+  double ST_mul3 = 0.0;
+  double ST_mul4 = 0.0;
+  double ST_mul5 = 0.0;
+  double ST_mul6 = 0.0;
+  double ST_mul7 = 0.0;
+  double ST_mul8 = 0.0;
+  double ST_mul9 = 0.0;
+  double ST_mul10 = 0.0;
+  int n_multiplicity = 0.0;
+  double weightTree = 0.0;
+
+  outputFile = new TFile("BH_Tree_"+name+".root","RECREATE");
+  outputTree=new TTree("BH_Tree", "BH_Tree"); 
+  outputTree->Branch("ST_mul2", &ST_mul2, "ST_mul2/D");
+  outputTree->Branch("ST_mul3", &ST_mul3, "ST_mul3/D");
+  outputTree->Branch("ST_mul4", &ST_mul4, "ST_mul4/D");
+  outputTree->Branch("ST_mul5", &ST_mul5, "ST_mul5/D");
+  outputTree->Branch("ST_mul6", &ST_mul6, "ST_mul6/D");
+  outputTree->Branch("ST_mul7", &ST_mul7, "ST_mul7/D");
+  outputTree->Branch("ST_mul8", &ST_mul8, "ST_mul8/D");
+  outputTree->Branch("ST_mul9", &ST_mul9, "ST_mul9/D");
+  outputTree->Branch("ST_mul10", &ST_mul10, "ST_mul10/D");
+  outputTree->Branch("n_multiplicity", &n_multiplicity, "n_multiplicity/I");
+  outputTree->Branch("weightTree", &weightTree, "weightTree/D");
+
+  //@@@@@@@@@@@@@@@@@@@@
+  //    Histograms     @    
+  //@@@@@@@@@@@@@@@@@@@@
   //N Objects
   TH1D * njets             = new TH1D("njets","",              35,    0.5,  35.5);
   TH1D * nelectrons        = new TH1D("nelectrons","",         35,    0.5,  35.5);
@@ -68,23 +90,11 @@ fChain->SetBranchStatus("lumiblock", 1);
   //TH1::SetDefaultSumw2();
   //general Histos
   TH1D * njet_et50         = new TH1D("njet_et50","",     35,    0.5,  35.5);
-  TH1D * njet_pt50         = new TH1D("njet_pt50","",     35,    0.5,  35.5);
   TH1D * LJ1_pT50          = new TH1D("LJ1_pT50","",      500,   0,    5000);
   TH1D * LJ2_pT50          = new TH1D("LJ2_pT50","",      500,   0,    5000);
-  TH1D * jet_pT            = new TH1D("jet_pT","",        500,   0,    5000);
-  TH1D * ele_pT            = new TH1D("ele_pT","",        500,   0,    5000);
-  TH1D * jet_eT            = new TH1D("jet_eT","",        500,   0,    5000);
-  TH1D * ele_pT50          = new TH1D("ele_pT50","",      500,   0,    5000);
-  TH1D * ele_pTId          = new TH1D("ele_pTId","",      500,   0,    5000);
-  TH1D * jet_pT50          = new TH1D("jet_pT50","",      500,   0,    5000);
   TH1D * jet_eT50          = new TH1D("jet_eT50","",      500,   0,    5000);
-  TH1D * jet_eta           = new TH1D("jet_eta","",       80,   -4,       4);
-  TH1D * jet_phi           = new TH1D("jet_phi","",       80,   -4,       4);
   TH1D * jet_eta_et50      = new TH1D("jet_eta_et50","",  80,   -4,       4);
   TH1D * jet_phi_et50      = new TH1D("jet_phi_et50","",  80,   -4,       4);
-  TH1D * jet_eta_pt50      = new TH1D("jet_eta_pt50","",  80,   -4,       4);
-  TH1D * jet_phi_pt50      = new TH1D("jet_phi_pt50","",  80,   -4,       4);
-  TH1D * DijetMass_pt50    = new TH1D("DijetMass_pt50","",80,    0,    8000); 
   // Jet ST and HT 
   TH1D * ST_2jet_exc = new TH1D("ST_2jet_exc", "", 800, 0,8000);  TH1D * HT_2jet_exc = new TH1D("HT_2jet_exc", "", 800, 0,8000);
   TH1D * ST_3jet_exc = new TH1D("ST_3jet_exc", "", 800, 0,8000);  TH1D * HT_3jet_exc = new TH1D("HT_3jet_exc", "", 800, 0,8000);
@@ -145,243 +155,292 @@ fChain->SetBranchStatus("lumiblock", 1);
   TH1D * hdR_JetEle = new TH1D("hdR_JetEle", "",80,   0,8);  TH1D * hdR_PhoJet = new TH1D("hdR_PhoJet", "",80,   0,8);
   TH1D * hdR_JetPho = new TH1D("hdR_JetPho", "",80,   0,8);  TH1D * hdR_PhoEle = new TH1D("hdR_PhoEle", "",80,   0,8);
   TH1D * hdR_JetMuo = new TH1D("hdR_JetMuo", "",80,   0,8);  TH1D * hdR_PhoMuo = new TH1D("hdR_PhoMuo", "",80,   0,8);
-  TH1D * hdR_EleJet = new TH1D("hdR_EleJet", "",80,   0,8);  TH1D * hdR_MuoJet = new TH1D("hdR_MuoJet", "",80,   0,8);
-  TH1D * hdR_ElePho = new TH1D("hdR_ElePho", "",80,   0,8);  TH1D * hdR_MuoEle = new TH1D("hdR_MuoEle", "",80,   0,8);
-  TH1D * hdR_EleMuo = new TH1D("hdR_EleMuo", "",80,   0,8);  TH1D * hdR_MuoPho = new TH1D("hdR_MuoPho", "",80,   0,8);
+  TH1D * hdR_EleJet = new TH1D("hdR_EleJet", "",80,   0,8);  
+  TH1D * hdR_EleMuo = new TH1D("hdR_EleMuo", "",80,   0,8);
  
 
   if (fChain == 0) return;
   Long64_t nentries = fChain->GetEntriesFast();
-  //cout << "nentries = " << nentries << endl;
   Long64_t nbytes = 0, nb = 0;
 
-//@@@@@@@@@@@@@
-// g-Counters @    
-//@@@@@@@@@@@@@
+  //@@@@@@@@@@@@@
+  // g-Counters @    
+  //@@@@@@@@@@@@@
    int n_start=0, n_trig=0, n_total=0;
-//@@@@@@@@@@@@@@
-// output file @    
-//@@@@@@@@@@@@@@
-//ifstream myfile("IntEvt/intEvt_"+datatype+".txt");
-//if (myfile.is_open())
-//@@@@@@@@@@@@@@@@@@@@
-//    EVENT LOOP     @    
-//@@@@@@@@@@@@@@@@@@@@   
+   bool debugFlag     = false ;
+   bool passIso          = true ;
+   char *messageBuffer   = new char[400] ;
+   bool eventHasMuon     = false;
+   bool eventHasPhoton   = false;
+   bool eventHasElectron = false;
+   float JetMuonEt       = 0.;
+   float JetElectronEt   = 0.;
+   float JetPhotonEt     = 0.;
+   fillJECUncVector();
+  //@@@@@@@@@@@@@@
+  // output file @    
+  //@@@@@@@@@@@@@@
+  //@@@@@@@@@@@@@@@@@@@@
+  //    EVENT LOOP     @    
+  //@@@@@@@@@@@@@@@@@@@@   
   for (Long64_t jentry=0; jentry<nentries;jentry++) {
-  Long64_t ientry = LoadTree(jentry);
-  if (ientry < 0) break;
-  nb = fChain->GetEntry(jentry);   nbytes += nb;
-  n_start++;
-  // Pass Trigger
-  if(firedHLT_PFHT800_v2 != 1) continue;
-  //if(!(firedHLT_PFHT800_v2 == 1 || firedHLT_PFHT475_v2 == 1)) continue;
-  //if(firedHLT_PFHT475_v1 != 1) continue;
-  //if(firedHLT_PFJet140_v2 != 1) continue;
-  //if(firedHLT_PFJet450_v2 != 1) continue;
-  n_trig++;
+      Long64_t ientry = LoadTree(jentry);
+      if (ientry < 0) break;
+      if(jentry % 100000 == 0) cout << "Processing event number: " << jentry << endl;
+      nb = fChain->GetEntry(jentry);   nbytes += nb;
+      n_start++;
+      // Pass Trigger, filters, good vertices
+      //if (!firedHLT_PFHT800_v2 || !passed_CSCTightHaloFilter || !passed_goodVertices || !passed_eeBadScFilter) continue;
+      n_trig++;
 
-  njets      -> Fill(NJets);
-  nelectrons -> Fill(NElectrons);
-  nphotons   -> Fill(NPhotons);
-  nmuons     -> Fill(NMuons);
+      njets      -> Fill(NJets);
+      nelectrons -> Fill(NElectrons);
+      nphotons   -> Fill(NPhotons);
+      nmuons     -> Fill(NMuons);
 
-  //hardcode numbers here:
-  NJets = 25;
-  NElectrons = 25;
-  NPhotons = 25;
-  NMuons = 25;
-
-//@@@@@@@@@@@@@
-// l-Counters @    
-//@@@@@@@@@@@@@
-  int n_et50=0,n_pt50=0, n_jet_et50=0,n_jet_pt50=0, n_ele_et50=0, n_ele_pt50=0, n_pho_et50=0, n_pho_pt50=0, n_muo_et50=0, n_muo_pt50=0;
-  float etsum=0., ptsum=0., MetEtsum=0.,MetPtsum=0.,JetEtsum =0.,JetPtsum=0.,EleEtsum=0., ElePtsum=0., PhoEtsum=0., PhoPtsum=0., MuoPtsum=0., MuoEtsum=0.;
-
-//@@@@@@@@@@@@@
-//     MET    @    
-//@@@@@@@@@@@@@
-MetEtsum =Met;
-
-if(MetEtsum > 10000) continue;
-//@@@@@@@@@@@@@
-//    Jets    @    
-//@@@@@@@@@@@@@
- for(int jeti=0; jeti<NJets; jeti++){
-  double dR_JetEle =1000;
-  double dR_JetPho =1000;
-  double dR_JetMuo =1000;
-  // Jet separation from electrons
-  for(int elei=0; elei<NElectrons; elei++){
-  dR_JetEle = getdR(JetEta[jeti],EleEta[elei],JetPhi[jeti],ElePhi[elei]);
-  if(dR_JetEle<0.3)break;
-  hdR_JetEle ->Fill(dR_JetEle,weight); 
-  }
-  if(dR_JetEle<0.3)continue;
-  // Jet separation from photons
-  for(int phoi=0; phoi<NPhotons; phoi++){
-  dR_JetPho = getdR(JetEta[jeti],PhEta[phoi],JetPhi[jeti],PhPhi[phoi]);
-  if(dR_JetPho<0.3)break;
-  hdR_JetPho ->Fill(dR_JetPho,weight);
-  }
-  if(dR_JetPho<0.3)continue;
-  // Jet separation from muons
-  for(int muoi=0; muoi<NMuons; muoi++){
-  dR_JetMuo = getdR(JetEta[jeti],MuEta[muoi],JetEta[jeti],MuPhi[muoi]);
-  if(dR_JetMuo<0.3)break;
-  hdR_JetMuo ->Fill(dR_JetMuo,weight);
-  }
-  if(dR_JetMuo<0.3)continue;
+      //hardcode numbers here:
+      eventHasMuon     = false ;
+      eventHasPhoton   = false ;
+      eventHasElectron = false ;
+      NJets = 25;
+      NElectrons = 25;
+      NPhotons = 25;
+      NMuons = 25;
   
-  jet_pT  -> Fill(JetPt[jeti],  weight);
-  jet_eT  -> Fill(JetEt[jeti],  weight);
-  jet_eta -> Fill(JetEta[jeti], weight);
-  jet_phi -> Fill(JetPhi[jeti], weight);
-  if(JetEt[jeti]>50 ) {
-  JetEtsum += JetEt[jeti]; 
-  jet_eT50     -> Fill(JetEt[jeti],  weight);
-  jet_eta_et50 -> Fill(JetEta[jeti], weight); 
-  jet_phi_et50 -> Fill(JetPhi[jeti], weight);
-  n_jet_et50++;
-  } //et50
-  if(JetPt[jeti]>50 ) {
-  JetPtsum += JetPt[jeti]; 
-  jet_pT50     -> Fill(JetPt[jeti], weight);
-  jet_eta_pt50 -> Fill(JetEta[jeti], weight); 
-  jet_phi_pt50 -> Fill(JetPhi[jeti], weight);
-  n_jet_pt50++;
-    }//pt50
- }// Jet Loop
+     //@@@@@@@@@@@@@
+     // l-Counters @    
+     //@@@@@@@@@@@@@
+     int n_et50=0,n_pt50=0, n_jet_et50=0,n_jet_pt50=0, n_ele_et50=0, n_ele_pt50=0, n_pho_et50=0, n_pho_pt50=0, n_muo_et50=0, n_muo_pt50=0;
+     float etsum=0., ptsum=0., MetEtsum=0.,MetPtsum=0.,JetEtsum =0.,JetPtsum=0.,EleEtsum=0., ElePtsum=0., PhoEtsum=0., PhoPtsum=0., MuoPtsum=0., MuoEtsum=0.;
+     float JetEtsum_reg = 0.;
+     ST_mul2 = 0.0;
+     ST_mul3 = 0.0;
+     ST_mul4 = 0.0;
+     ST_mul5 = 0.0;
+     ST_mul6 = 0.0;
+     ST_mul7 = 0.0;
+     ST_mul8 = 0.0;
+     ST_mul9 = 0.0;
+     ST_mul10 = 0.0;
+     n_multiplicity = 0.0;
+     weightTree = 0.0;
+     //@@@@@@@@@@@@@
+     //     MET    @    
+     //@@@@@@@@@@@@@
+     MetEtsum = Met;
+     if(MetEtsum > 10000) continue;
+     //@@@@@@@@@@@@@
+     //    Jets    @    
+     //@@@@@@@@@@@@@
+     double jetPt = 0.0;
+     double jetEt = 0.0;
+     for (int iJet = 0; iJet < NJets; ++iJet) {
+       passIso=true;
+       JetMuonEt     =0;
+       JetElectronEt =0;
+       JetPhotonEt   =0;
+       if(jecUnc=="Default") {
+         jetPt = JecUnc(JetPt[iJet], JetEta[iJet], "Default")*JetPt[iJet] + JetPt[iJet];
+         jetEt = JetEt[iJet]*(jetPt/JetPt[iJet]);
+       }
+       else if(jecUnc=="JecUp"){
+         jetPt = JecUnc(JetPt[iJet], JetEta[iJet], "JecUp")*JetPt[iJet] + JetPt[iJet];
+         jetEt = JetEt[iJet]*(jetPt/JetPt[iJet]);
+       }
+       else if(jecUnc=="JecDown"){
+         jetPt = -JecUnc(JetPt[iJet], JetEta[iJet], "JecDown")*JetPt[iJet] + JetPt[iJet];
+         jetEt = JetEt[iJet]*(jetPt/JetPt[iJet]);
+       }
+       if (jetEt>50.) {
+         for (int iMuon = 0; iMuon < NMuons; ++iMuon ) {
+           if (MuEt[iMuon]>50) {
+             eventHasMuon = true;
+             hdR_JetMuo->Fill(dR(JetEta[iJet],JetPhi[iJet], MuEta[iMuon], MuPhi[iMuon]));
+             if (jetEt && dR(JetEta[iJet],JetPhi[iJet], MuEta[iMuon], MuPhi[iMuon]) < 0.05) {
+               JetMuonEt+=MuEt[iMuon];
+               if (JetMuonEt>0.8*jetEt) {
+                 passIso = false;
+                 if (debugFlag) {
+                   sprintf(messageBuffer, "Jet number %d failed isolation with Muon number %d  in run number %d lumi section %d event number %d\n", iJet, iMuon, runno, lumiblock, evtno);
+                   cout << messageBuffer;
+                 }
+                 break;
+               }
+             }
+           }
+         }
+         for (int iElectron = 0; iElectron < NElectrons; ++iElectron ) {
+          if (EleEt[iElectron]>50) {
+            eventHasElectron = true;
+            hdR_JetEle->Fill(dR(JetEta[iJet],JetPhi[iJet], EleEta[iElectron], ElePhi[iElectron]));
+            if (dR(JetEta[iJet],JetPhi[iJet], EleEta[iElectron], ElePhi[iElectron]) < 0.05) {
+              JetElectronEt+=EleEt[iElectron];
+              if (JetElectronEt > 0.7*jetEt) {
+                passIso = false;
+                if (debugFlag) {
+                  sprintf(messageBuffer, "Jet number %d failed isolation with Electron number %d  in run number %d lumi section %d event number %d\n", iJet, iElectron, runno, lumiblock, evtno);
+                  cout << messageBuffer;
+                }
+                break;
+              }
+            }
+          }
+        }
+        for (int iPhoton = 0; iPhoton < NPhotons; ++iPhoton ) {
+          if (PhEt[iPhoton]>50) {
+            eventHasPhoton = true;
+            hdR_JetPho->Fill(dR(JetEta[iJet],JetPhi[iJet], PhEta[iPhoton], PhPhi[iPhoton]));
+            if (dR(JetEta[iJet],JetPhi[iJet], PhEta[iPhoton], PhPhi[iPhoton]) < 0.05) {
+              JetPhotonEt+=PhEt[iPhoton];
+              if (JetPhotonEt>0.5*jetEt) {
+                passIso = false;
+                if (debugFlag) {
+                  sprintf(messageBuffer, "Jet number %d failed isolation with Photon number %d  in run number %d lumi section %d event number %d\n", iJet, iPhoton, runno, lumiblock, evtno);
+                  cout << messageBuffer;
+                }
+                break;
+              }
+            }
+          }
+        }
+        if (!passIso) continue;
+        if (debugFlag) cout << "    JetEt for jet number " << iJet << " is: " << jetEt << endl;
+        JetEtsum += jetEt; 
+        JetEtsum_reg += JetEt[iJet];
+        //std::cout << "JetEtsum = " << JetEtsum << std::endl;
+        //std::cout << "JetEtsum_reg = " << JetEtsum_reg << std::endl;
+        jet_eT50     -> Fill(jetEt,  weight);
+        jet_eta_et50 -> Fill(JetEta[iJet], weight); 
+        jet_phi_et50 -> Fill(JetPhi[iJet], weight);
+        n_jet_et50++;
+        if (debugFlag) {
+          sprintf(messageBuffer, "Jet number %d passed isolation in run number %d lumi section %d event number %d.\n       It had Px=%f and Py=%f\n", iJet, runno, lumiblock, evtno, JetPx[iJet], JetPy[iJet]);
+          cout << messageBuffer;
+        }
+      }  
+     else break;
+   }// Jet Loop
 
-  //Leading Jets
-  if(n_jet_pt50>2){
-  LJ1_pT50->Fill(JetPt[0],weight);
-  LJ2_pT50->Fill(JetPt[1],weight);
-             }//Leading jets Loop
-  // Jet Multiplicity
-  njet_et50->Fill(n_jet_et50, weight);
-  njet_pt50->Fill(n_jet_pt50, weight);
-//Dijet Mass
-if(n_jet_pt50==2){
-float DijetMass = (JetE[0]*JetE[1])-((JetPx[0]*JetPx[1])+(JetPy[0]*JetPy[1])+(JetPz[0]*JetPz[1]));
-DijetMass_pt50  -> Fill(DijetMass, weight);
-}
-//@@@@@@@@@@@@@
-//  Electrons @    
-//@@@@@@@@@@@@@
-  for(int elei=0; elei<NElectrons; elei++){
-  ele_pT -> Fill(ElePt[elei],weight);
-  ele_pTId -> Fill(ElePt[elei],weight);
-  double dR_EleJet =1000;
-  double dR_ElePho =1000;
-  double dR_EleMuo =1000;
-  // Electron separation from jets
-  for(int jeti=0; jeti<NJets; jeti++){
-  dR_EleJet = getdR(EleEta[elei],JetEta[jeti],ElePhi[elei],JetPhi[jeti]);
-  if(dR_EleJet<0.3)break;
-  hdR_EleJet ->Fill(dR_EleJet,weight);
-  }
-  if(dR_EleJet<0.3)continue;
-  // Electron separation from photons
-  for(int phoi=0; phoi<NPhotons; phoi++){
-  dR_ElePho = getdR(EleEta[elei],PhEta[phoi],ElePhi[elei],PhPhi[phoi]);
-  if(dR_ElePho<0.3)break;
-  hdR_ElePho ->Fill(dR_ElePho,weight);
-  }
-  if(dR_ElePho<0.3)continue;
-  // Electron separation from muons
-  for(int muoi=0; muoi<NMuons; muoi++){
-  dR_EleMuo = getdR(EleEta[elei],MuEta[muoi],EleEta[elei],MuPhi[muoi]);
-  if(dR_EleMuo<0.3)break;
-  hdR_EleMuo ->Fill(dR_EleMuo,weight);
-  }
-  if(dR_EleMuo<0.3)continue;
-  if(EleEt[elei]>50){ EleEtsum += EleEt[elei];
-  ele_pT50 -> Fill(ElePt[elei],weight);
-  n_ele_et50++;
-  }//et50
-  if(ElePt[elei]>50){
-  ElePtsum += ElePt[elei];
-  n_ele_pt50++;
-    }//pt50
-  }//Electron Loop
-  //if(n_ele_pt50 !=0 )cout << "Hurrrrrrray  Electron Accepted   :" << n_ele_pt50  << endl;
-//@@@@@@@@@@@@@
-//   Photons  @    
-//@@@@@@@@@@@@@
-  for(int phoi=0; phoi<NPhotons; phoi++){
-  double dR_PhoJet =1000;
-  double dR_PhoEle =1000;
-  double dR_PhoMuo =1000;
-  // Photon separation from jets
-  for(int jeti=0; jeti<NJets; jeti++){
-  dR_PhoJet = getdR(PhEta[phoi],JetEta[jeti],PhPhi[phoi],JetPhi[jeti]);
-  if(dR_PhoJet<0.3)break;
-  hdR_PhoJet -> Fill(dR_PhoJet,weight);
-  }
-  if(dR_PhoJet<0.3)continue;
-  // Photon separation from electrons
-  for(int elei=0; elei<NElectrons; elei++){
-  dR_PhoEle = getdR(PhEta[phoi],EleEta[elei],PhPhi[phoi],ElePhi[elei]);
-  if(dR_PhoEle<0.3)break;
-  hdR_PhoEle -> Fill(dR_PhoEle,weight);
-  }
-  if(dR_PhoEle<0.3)continue;
-  // Photon separation from muons
-  for(int muoi=0; muoi<NMuons; muoi++){
-  dR_PhoMuo = getdR(PhEta[phoi],MuEta[muoi],PhEta[phoi],MuPhi[muoi]);
-  if(dR_PhoMuo<0.3)break;
-  hdR_PhoMuo -> Fill(dR_PhoMuo,weight);
-  }
-  if(dR_PhoMuo<0.3)continue;
-  if(PhEt[phoi]>50){
-  PhoEtsum += PhEt[phoi];
-  n_pho_et50++;
-  }//et50 
-  if(PhPt[phoi]>50){
-  PhoPtsum += PhPt[phoi];
-  n_pho_pt50++;
-    }//pt50
-  }//Photon Loop
-//@@@@@@@@@@@@@
-//   Muons    @    
-//@@@@@@@@@@@@@
-  for(int muoi=0; muoi<NMuons; muoi++){
-  double dR_MuoJet =1000;
-  double dR_MuoEle =1000;
-  double dR_MuoPho =1000;
-  // Muon separation from jets
-  for(int jeti=0; jeti<NJets; jeti++){
-  dR_MuoJet = getdR(MuEta[muoi],JetEta[jeti],MuPhi[muoi],JetPhi[jeti]);
-  if(dR_MuoJet<0.3)break;
-  hdR_MuoJet -> Fill(dR_MuoJet,weight);
-  }
-  if(dR_MuoJet<0.3)continue;
-  // Muon separation from electrons
-  for(int elei=0; elei<NElectrons; elei++){
-  dR_MuoEle = getdR(MuEta[muoi],EleEta[elei],MuPhi[muoi],ElePhi[elei]);
-  if(dR_MuoEle<0.3)break;
-  hdR_MuoEle -> Fill(dR_MuoEle,weight);
-  }
-  if(dR_MuoEle<0.3)continue;
-  // Electron separation from photons
-  for(int phoi=0; phoi<NPhotons; phoi++){
-  dR_MuoPho = getdR(MuEta[muoi],PhEta[phoi],MuPhi[muoi],PhPhi[phoi]);
-  if(dR_MuoPho<0.3)break;
-  hdR_MuoPho -> Fill(dR_MuoPho,weight); 
-  }
-  if(dR_MuoPho<0.3)continue;
- if(MuEt[muoi]>50){
-    MuoEtsum +=  MuEt[muoi];
-    n_muo_et50++;
-    }//et50 
-    if(MuPt[muoi]>50){
-    MuoPtsum += MuPt[muoi];
-    n_muo_pt50++;
-      }//pt50
-  }//Muon Loop
-//@@@@@@@@@@@@@
-// (N,ST) SUM @    
-//@@@@@@@@@@@@@
+   //Leading Jets
+   if(n_jet_et50>2){
+     LJ1_pT50->Fill(JecUnc(JetPt[0], JetEta[0], "Default")*JetPt[0] + JetPt[0], weight);
+     LJ2_pT50->Fill(JecUnc(JetPt[1], JetEta[1], "Default")*JetPt[1] + JetPt[1], weight);
+     }//Leading jets Loop
+    // Jet Multiplicity
+    njet_et50->Fill(n_jet_et50, weight);
+    //@@@@@@@@@@@@@
+    //  Electrons @    
+    //@@@@@@@@@@@@@
+    if (eventHasElectron) {
+      for (int iElectron = 0; iElectron < NElectrons; ++iElectron) {
+        passIso=true;
+        if (EleEt[iElectron]>50.) {
+          for (int iJet = 0; iJet < NJets; ++iJet ) {
+            hdR_EleJet->Fill(dR(EleEta[iElectron],ElePhi[iElectron], JetEta[iJet], JetPhi[iJet]));
+            if (jetEt>50 && dR(EleEta[iElectron],ElePhi[iElectron], JetEta[iJet], JetPhi[iJet]) < 0.05) {
+              if (EleEt[iElectron]<0.7*jetEt) {
+                passIso = false;
+                if (debugFlag) {
+                  sprintf(messageBuffer, "Electron number %d failed isolation with Jet number %d  in run number %d lumi section %d event number %d\n", iElectron, iJet, runno, lumiblock, evtno);
+                  cout << messageBuffer;
+                }
+                break;
+              }
+            }
+          }
+          if (!passIso) continue;
+         
+          // Throw away electron if there's an electron/muon overlap.
+          for (int iMuon = 0; iMuon < NMuons; ++iMuon ) {
+            hdR_EleMuo->Fill(dR(EleEta[iElectron],ElePhi[iElectron], MuEta[iMuon], MuPhi[iMuon]));
+            if (MuEt[iMuon]>50 && dR(EleEta[iElectron],ElePhi[iElectron], MuEta[iMuon], MuPhi[iMuon]) < 0.05) {
+              passIso = false;
+              if (debugFlag) {
+                sprintf(messageBuffer, "Electron number %d failed isolation with Muon number %d  in run number %d lumi section %d event number %d\n", iElectron, iMuon, runno, lumiblock, evtno);
+                cout << messageBuffer;
+              }
+             break;
+           } 
+         } 
+         if (!passIso) continue;
+         EleEtsum += EleEt[iElectron];
+         n_ele_et50++;
+         if (debugFlag) {
+            sprintf(messageBuffer, "Ele number %d passed isolation in run number %d lumi section %d event number %d.      \n It had Px=%f and Py=%f\n", iElectron, runno, lumiblock, evtno, ElePx[iElectron], ElePy[iElectron]);
+            cout << messageBuffer;
+         }
+       }
+       else break;
+     }
+   }      
+   if (eventHasPhoton) {
+     for (int iPhoton = 0; iPhoton < NPhotons; ++iPhoton) {
+       passIso=true;
+       if (PhEt[iPhoton]>50.) {
+         for (int iJet = 0; iJet < NJets; ++iJet ) {
+           hdR_PhoJet->Fill(dR(PhEta[iPhoton],PhPhi[iPhoton], JetEta[iJet], JetPhi[iJet]));
+           if (jetEt>50 && dR(PhEta[iPhoton],PhPhi[iPhoton], JetEta[iJet], JetPhi[iJet]) < 0.05) {
+             if (PhEt[iPhoton]<0.5*jetEt) {
+               passIso = false;
+               break;
+              }
+            }
+          }
+          if (!passIso) continue;
+          for (int iMuon = 0; iMuon < NMuons; ++iMuon ) {
+            hdR_PhoMuo->Fill(dR(PhEta[iPhoton], PhPhi[iPhoton], MuEta[iMuon], MuPhi[iMuon]));
+            if (MuEt[iMuon]>50 && dR(PhEta[iPhoton], PhPhi[iPhoton], MuEta[iMuon], MuPhi[iMuon]) < 0.05) {
+              if (debugFlag) {
+                sprintf(messageBuffer, "Photon number %d failed isolation with Muon number %d  in run number %d lumi section %d event number %d\n", iPhoton, iMuon, runno, lumiblock, evtno);
+                cout << messageBuffer;
+              }
+              passIso = false;
+              break;
+            }
+          }
+          if (!passIso) continue;
+          for (int iElectron = 0; iElectron < NElectrons; ++iElectron ) {
+            hdR_PhoEle->Fill(dR(PhEta[iPhoton], PhPhi[iPhoton], EleEta[iElectron], ElePhi[iElectron]));
+            if (EleEt[iElectron]>50 && dR(PhEta[iPhoton], PhPhi[iPhoton], EleEta[iElectron], ElePhi[iElectron]) < 0.05) {
+              if (debugFlag) {
+                sprintf(messageBuffer, "Photon number %d failed isolation with Electron number %d  in run number %d lumi section %d event number %d\n", iPhoton, iElectron, runno, lumiblock, evtno);
+                cout << messageBuffer;
+              }
+              passIso = false;
+              break;
+            }
+          }
+          if (!passIso) continue;
+          if (debugFlag) cout << "    PhEt for photon number " << iPhoton << " is: " << PhEt[iPhoton] << endl;
+          PhoEtsum += PhEt[iPhoton];
+          n_pho_et50++;
+          if (debugFlag) {
+            sprintf(messageBuffer, "Photon number %d passed isolation in run number %d lumi section %d event number %d.\n      It had Px=%f and Py=%f\n", iPhoton, runno, lumiblock, evtno, PhPx[iPhoton], PhPy[iPhoton]);
+            cout << messageBuffer;
+            }
+          }
+        else break;
+      }
+    }
+
+  if (eventHasMuon) {
+      for (int iMuon = 0; iMuon < NMuons; ++iMuon) {
+        passIso=true;
+        if (MuEt[iMuon]>50.) {
+          if (debugFlag) cout << "    MuEt for muon number " << iMuon << " is: " << MuEt[iMuon] << endl;
+          MuoEtsum += MuEt[iMuon];
+          n_muo_et50++;
+          if (debugFlag) {
+            sprintf(messageBuffer, "Muon number %d passed isolation in run number %d lumi section %d event number %d.\n       It had Px=%f and Py=%f\n", iMuon, runno, lumiblock, evtno, MuPx[iMuon], MuPy[iMuon]);
+          }
+        }
+        else break;
+      }
+    }
+
+  //@@@@@@@@@@@@@
+  // (N,ST) SUM @    
+  //@@@@@@@@@@@@@
   etsum  = MetEtsum + JetEtsum + EleEtsum + PhoEtsum + MuoEtsum;
   ptsum  = MetPtsum + JetPtsum + ElePtsum + PhoPtsum + MuoPtsum;
   n_et50 = n_jet_et50 + n_ele_et50 + n_pho_et50 + n_muo_et50;
@@ -396,8 +455,7 @@ DijetMass_pt50  -> Fill(DijetMass, weight);
   nmuons_pt50     ->  Fill(n_muo_pt50,weight);
   nphotons_pt50   ->  Fill(n_pho_pt50,weight);
 
-
-// Only Jets ST 
+  // Only Jets ST 
   if(n_jet_et50 == 2) {ST_2jet_exc -> Fill(JetEtsum, weight); } if(n_jet_pt50 == 2){HT_2jet_exc -> Fill(JetPtsum, weight);}
   if(n_jet_et50 == 3) {ST_3jet_exc -> Fill(JetEtsum, weight); } if(n_jet_pt50 == 3){HT_3jet_exc -> Fill(JetPtsum, weight);}
   if(n_jet_et50 == 4) {ST_4jet_exc -> Fill(JetEtsum, weight); } if(n_jet_pt50 == 4){HT_4jet_exc -> Fill(JetPtsum, weight);}
@@ -424,7 +482,7 @@ DijetMass_pt50  -> Fill(DijetMass, weight);
   if(n_jet_et50 >= 11) {ST_11jet_inc -> Fill(JetEtsum, weight); } if(n_jet_pt50 >= 11){HT_11jet_inc -> Fill(JetPtsum, weight);}
   if(n_jet_et50 >= 12) {ST_12jet_inc -> Fill(JetEtsum, weight); } if(n_jet_pt50 >= 12){HT_12jet_inc -> Fill(JetPtsum, weight);}
 
-//All Objects ST
+  //All Objects ST
   if(n_et50 == 2) {ST_N2_exc -> Fill(etsum, weight); } if(n_pt50 == 2){HT_N2_exc -> Fill(ptsum, weight);}
   if(n_et50 == 3) {ST_N3_exc -> Fill(etsum, weight); } if(n_pt50 == 3){HT_N3_exc -> Fill(ptsum, weight);}
   if(n_et50 == 4) {ST_N4_exc -> Fill(etsum, weight); } if(n_pt50 == 4){HT_N4_exc -> Fill(ptsum, weight);}
@@ -440,8 +498,11 @@ DijetMass_pt50  -> Fill(DijetMass, weight);
   N_vs_ST->Fill(etsum, n_et50, weight);
   multiplicity->Fill(n_et50,  weight);
   ST->Fill(etsum, weight);
-  if(n_et50 >= 8 and etsum > 1000.0) cout << "Event number high multiplicity = " << evtno << " Lumi Section = " << lumiblock << " Run number " << runno << " with jets: " << n_et50 << " ST = " << etsum << " etsum  = MetEtsum + JetEtsum + EleEtsum + PhoEtsum + MuoEtsum "<< " , " << MetEtsum << " , "  << JetEtsum << " , " << EleEtsum << " , " << PhoEtsum << " , " << MuoEtsum << endl;
-  if(etsum > 5000.0) cout << "Event number low multiplicity and high ST = " << evtno << " Lumi Section = " << lumiblock << " Run number " << runno << " with jets: " << n_et50 << " ST = " << etsum << " etsum  = MetEtsum + JetEtsum + EleEtsum + PhoEtsum + MuoEtsum "<< " , " << MetEtsum << " , "  << JetEtsum << " , " << EleEtsum << " , " << PhoEtsum << " , " << MuoEtsum << endl;
+  //if(n_et50 >= 8 and etsum > 1000.0) cout << "Event number high multiplicity = " << evtno << " Lumi Section = " << lumiblock << " Run number " << runno << " with jets: " << n_et50 << " ST = " << etsum << " etsum  = MetEtsum + JetEtsum + EleEtsum + PhoEtsum + MuoEtsum "<< " , " << MetEtsum << " , "  << JetEtsum << " , " << EleEtsum << " , " << PhoEtsum << " , " << MuoEtsum << endl;
+  //if(etsum > 5000.0) cout << "Event number low multiplicity and high ST = " << evtno << " Lumi Section = " << lumiblock << " Run number " << runno << " with jets: " << n_et50 << " ST = " << etsum << " etsum  = MetEtsum + JetEtsum + EleEtsum + PhoEtsum + MuoEtsum "<< " , " << MetEtsum << " , "  << JetEtsum << " , " << EleEtsum << " , " << PhoEtsum << " , " << MuoEtsum << endl;
+  
+  //if(etsum < 1000.0) continue;
+
   if(n_et50 >= 2) {ST_N2_inc -> Fill(etsum, weight); } if(n_pt50 >= 2){HT_N2_inc -> Fill(ptsum, weight);}
   if(n_et50 >= 3) {ST_N3_inc -> Fill(etsum, weight); } if(n_pt50 >= 3){HT_N3_inc -> Fill(ptsum, weight);}
   if(n_et50 >= 4) {ST_N4_inc -> Fill(etsum, weight); } if(n_pt50 >= 4){HT_N4_inc -> Fill(ptsum, weight);}
@@ -454,13 +515,30 @@ DijetMass_pt50  -> Fill(DijetMass, weight);
   if(n_et50 >= 11) {ST_N11_inc -> Fill(etsum, weight); } if(n_pt50 >= 11){HT_N11_inc -> Fill(ptsum, weight);} 
   if(n_et50 >= 12) {ST_N12_inc -> Fill(etsum, weight); } if(n_pt50 >= 12){HT_N12_inc -> Fill(ptsum, weight);} 
 
+  if(n_et50 >= 2) ST_mul2 = etsum;
+  if(n_et50 >= 3) ST_mul3 = etsum;
+  if(n_et50 >= 4) ST_mul4 = etsum;
+  if(n_et50 >= 5) ST_mul5 = etsum;
+  if(n_et50 >= 6) ST_mul6 = etsum;
+  if(n_et50 >= 7) ST_mul7 = etsum;
+  if(n_et50 >= 8) ST_mul8 = etsum;
+  if(n_et50 >= 9) ST_mul9 = etsum;
+  if(n_et50 >= 10) ST_mul10 = etsum;
+
+  n_multiplicity = n_et50;
   n_total++;
+  weightTree = 1.00;
+  //weightTree = (1064.0*1280.0)/(4963895.0);
+  //weightTree = (121.5*1280.0)/(3868886.0);
+  //weightTree = (25.4*1280.0)/(1961774.0);
+  outputTree->Fill();
   //if(n_total ==100)break;
    } //Event Loop
-//myfile.close();
-//@@@@@@@@@@@@@@@@@@@@
-//    OutPut File    @    
-//@@@@@@@@@@@@@@@@@@@@
+  //@@@@@@@@@@@@@@@@@@@@
+  //    OutPut File    @    
+  //@@@@@@@@@@@@@@@@@@@@
+
+  outputTree->Write();
 
   TFile* file = new TFile("output_"+name+".root", "RECREATE");
   file->mkdir("NObjects");
@@ -487,23 +565,11 @@ DijetMass_pt50  -> Fill(DijetMass, weight);
 
   file->cd("general");
   njet_et50      -> Write();
-  njet_pt50      -> Write();
-  jet_pT         -> Write();  
-  jet_eT         -> Write();
-  jet_pT50       -> Write();
   jet_eT50       -> Write();
-  jet_eta        -> Write();
-  jet_phi        -> Write();
   jet_eta_et50   -> Write();
   jet_phi_et50   -> Write();
-  jet_eta_pt50   -> Write();
-  jet_phi_pt50   -> Write();
   LJ1_pT50       -> Write();
   LJ2_pT50       -> Write();
-  ele_pT         -> Write();
-  ele_pTId       -> Write();
-  ele_pT50       -> Write();
-  DijetMass_pt50 -> Write(); 
 
   file->cd("JetST");
   ST_2jet_exc    ->Write();    
@@ -611,14 +677,10 @@ DijetMass_pt50  -> Fill(DijetMass, weight);
   hdR_JetPho -> Write(); 
   hdR_JetMuo -> Write();  
   hdR_EleJet -> Write();  
-  hdR_ElePho -> Write();  
   hdR_EleMuo -> Write();   
   hdR_PhoJet -> Write();
   hdR_PhoEle -> Write();
   hdR_PhoMuo -> Write();
-  hdR_MuoJet -> Write();
-  hdR_MuoEle -> Write();
-  hdR_MuoPho -> Write();
   file->Close();
   cout << "***************************  " << endl;
   cout <<name    <<endl;
@@ -627,5 +689,4 @@ DijetMass_pt50  -> Fill(DijetMass, weight);
   cout << "Initial Events  :" << n_start << endl;
   cout << "After Trigger   :" << n_trig  << endl;
   cout << "Total Events    :" << n_total  << endl;
-
 }
