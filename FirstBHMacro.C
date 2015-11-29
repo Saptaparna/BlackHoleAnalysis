@@ -44,7 +44,7 @@ void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
   fChain->SetBranchStatus("runno", 1);
   fChain->SetBranchStatus("evtno", 1);
   fChain->SetBranchStatus("lumiblock", 1);
-
+  fChain->SetBranchStatus("MuPFdBiso", 1);
   //variables associated with the output tree
   TFile *outputFile;
   TTree *outputTree;
@@ -256,7 +256,7 @@ void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
        }
        if (jetEt>50.) {
          for (int iMuon = 0; iMuon < NMuons; ++iMuon ) {
-           if (MuEt[iMuon]>50) {
+           if (MuEt[iMuon]>50 and MuPFdBiso[iMuon] < 0.15) {
              eventHasMuon = true;
              hdR_JetMuo->Fill(dR(JetEta[iJet],JetPhi[iJet], MuEta[iMuon], MuPhi[iMuon]));
              if (jetEt && dR(JetEta[iJet],JetPhi[iJet], MuEta[iMuon], MuPhi[iMuon]) < 0.05) {
@@ -356,7 +356,7 @@ void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
           // Throw away electron if there's an electron/muon overlap.
           for (int iMuon = 0; iMuon < NMuons; ++iMuon ) {
             hdR_EleMuo->Fill(dR(EleEta[iElectron],ElePhi[iElectron], MuEta[iMuon], MuPhi[iMuon]));
-            if (MuEt[iMuon]>50 && dR(EleEta[iElectron],ElePhi[iElectron], MuEta[iMuon], MuPhi[iMuon]) < 0.05) {
+            if (MuEt[iMuon]>50 and MuPFdBiso[iMuon] < 0.15 and dR(EleEta[iElectron],ElePhi[iElectron], MuEta[iMuon], MuPhi[iMuon]) < 0.05) {
               passIso = false;
               if (debugFlag) {
                 sprintf(messageBuffer, "Electron number %d failed isolation with Muon number %d  in run number %d lumi section %d event number %d\n", iElectron, iMuon, runno, lumiblock, evtno);
@@ -392,7 +392,7 @@ void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
           if (!passIso) continue;
           for (int iMuon = 0; iMuon < NMuons; ++iMuon ) {
             hdR_PhoMuo->Fill(dR(PhEta[iPhoton], PhPhi[iPhoton], MuEta[iMuon], MuPhi[iMuon]));
-            if (MuEt[iMuon]>50 && dR(PhEta[iPhoton], PhPhi[iPhoton], MuEta[iMuon], MuPhi[iMuon]) < 0.05) {
+            if (MuEt[iMuon]>50 and MuPFdBiso[iMuon] < 0.15 and dR(PhEta[iPhoton], PhPhi[iPhoton], MuEta[iMuon], MuPhi[iMuon]) < 0.05) {
               if (debugFlag) {
                 sprintf(messageBuffer, "Photon number %d failed isolation with Muon number %d  in run number %d lumi section %d event number %d\n", iPhoton, iMuon, runno, lumiblock, evtno);
                 cout << messageBuffer;
@@ -429,7 +429,7 @@ void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
   if (eventHasMuon) {
       for (int iMuon = 0; iMuon < NMuons; ++iMuon) {
         passIso=true;
-        if (MuEt[iMuon]>50.) {
+        if (MuEt[iMuon]>50. and MuPFdBiso[iMuon] < 0.15) {
           if (debugFlag) cout << "    MuEt for muon number " << iMuon << " is: " << MuEt[iMuon] << endl;
           MuoEtsum += MuEt[iMuon];
           n_muo_et50++;

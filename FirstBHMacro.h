@@ -60,6 +60,7 @@ public :
    Float_t         MuEt[25];
    Float_t         MuEta[25];
    Float_t         MuPhi[25];
+   Float_t         MuPFdBiso[25];
    Float_t         ST;
    Float_t         mBH;
    Float_t         Met;
@@ -209,6 +210,7 @@ public :
    TBranch        *b_passed_CSCTightHaloFilter ;
    TBranch        *b_passed_goodVertices       ;
    TBranch        *b_passed_eeBadScFilter      ;
+   TBranch        *b_MuPFdBiso;
    FirstBHMacro(TTree *tree=0);
    virtual ~FirstBHMacro();
    virtual Int_t    Cut(Long64_t entry);
@@ -368,6 +370,7 @@ void FirstBHMacro::Init(TTree *tree)
    fChain->SetBranchAddress("passed_CSCTightHaloFilter", &passed_CSCTightHaloFilter, &b_passed_CSCTightHaloFilter);
    fChain->SetBranchAddress("passed_goodVertices", &passed_goodVertices, &b_passed_goodVertices);
    fChain->SetBranchAddress("passed_eeBadScFilter", &passed_eeBadScFilter, &b_passed_eeBadScFilter);
+   fChain->SetBranchAddress("MuPFdBiso", &MuPFdBiso, &b_MuPFdBiso);
    Notify();
 }
 
