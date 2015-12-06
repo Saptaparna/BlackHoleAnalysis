@@ -107,7 +107,7 @@ public :
    Float_t         ResObjM;
    Float_t         ResObjPt;
    Int_t           runno;
-   Int_t           evtno;
+   long long       evtno;
    Int_t           lumiblock;
    Int_t           isRealData;
    Bool_t          firedHLT_PFHT800_v2;
@@ -217,7 +217,7 @@ public :
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
-   virtual void     Loop(TString name, float weight, std::string jecUnc);
+   virtual void     Loop(std::string name, float weight, std::string jecUnc, std::string metListFilename); 
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
    float JecUnc(double jetPt, double jetEta, std::string jecUnc);
@@ -239,13 +239,13 @@ FirstBHMacro::FirstBHMacro(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("ntuple_output_1.root");
-      //TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/QCD_HT-1000_1500_25ns.root"); 
+      //TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("ntuple_output_1.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/allMyData.root"); 
       if (!f || !f->IsOpen()) {
-         f = new TFile("ntuple_output_1.root");
+         f = new TFile("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/allMyData.root");
          //f = new TFile("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/QCD_HT-1000_1500_25ns.root");
       }
-      TDirectory * dir = (TDirectory*)f->Get("ntuple_output_1.root:/bhana");
+      TDirectory * dir = (TDirectory*)f->Get("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/allMyData.root:/bhana");
       //TDirectory * dir = (TDirectory*)f->Get("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/QCD_HT-1000_1500_25ns.root:/bhana");
       dir->GetObject("t",tree);
    }
@@ -466,6 +466,36 @@ Float_t FirstBHMacro::JecUnc(double jetpT, double jetEta, std::string jecUnc)
   
   return corr;
 }
+
+std::map<unsigned, std::set<unsigned> > readEventList(char const* _fileName) {
+  std::map<unsigned, std::set<unsigned> > list;
+  ifstream listFile(_fileName);
+  if (!listFile.is_open())
+    throw std::runtime_error(_fileName);
+
+  unsigned iL(0);
+  std::string line;
+  while (true) {
+    std::getline(listFile, line);
+    if (!listFile.good())
+      break;
+
+    if (line.find(":") == std::string::npos || line.find(":") == line.rfind(":"))
+      continue;
+
+    unsigned run(std::atoi(line.substr(0, line.find(":")).c_str()));
+    unsigned event(std::atoi(line.substr(line.rfind(":") + 1).c_str()));
+
+    list[run].insert(event);
+
+    ++iL;
+   }
+
+  std::cout << "Loaded " << iL << " events" << std::endl;
+
+  return list;
+}
+
 /*
 void FirstBHMacro::openJECFile()
 {

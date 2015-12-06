@@ -7,7 +7,7 @@
 #include <TStyle.h>
 #include <TCanvas.h>
 using namespace std;
-void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
+void FirstBHMacro::Loop(std::string name, float weight, std::string jecUnc, std::string metListFilename)
 {
   //@@@@@@@@@@@@@@@@@@@@
   //  SET BRANCHES     @    
@@ -60,7 +60,7 @@ void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
   int n_multiplicity = 0.0;
   double weightTree = 0.0;
 
-  outputFile = new TFile("BH_Tree_"+name+".root","RECREATE");
+  outputFile = new TFile(("BH_Tree_"+name+".root").c_str(),"RECREATE");
   outputTree=new TTree("BH_Tree", "BH_Tree"); 
   outputTree->Branch("ST_mul2", &ST_mul2, "ST_mul2/D");
   outputTree->Branch("ST_mul3", &ST_mul3, "ST_mul3/D");
@@ -170,7 +170,8 @@ void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
   // g-Counters @    
   //@@@@@@@@@@@@@
    int n_start=0, n_trig=0, n_total=0;
-   bool debugFlag     = false ;
+   bool debugFlag     = false;
+   bool debugFlagMETList = true;
    bool passIso          = true ;
    char *messageBuffer   = new char[400] ;
    bool eventHasMuon     = false;
@@ -186,6 +187,16 @@ void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
   //@@@@@@@@@@@@@@@@@@@@
   //    EVENT LOOP     @    
   //@@@@@@@@@@@@@@@@@@@@   
+  std::map<unsigned, std::set<unsigned> > list = readEventList(metListFilename.c_str());
+  bool passMETfilterList = true;
+  int  eventsToDump  = 25    ;  // if debugFlag is true, then stop once the number of dumped events reaches eventsToDump
+  bool dumpBigEvents = true ;
+  bool dumpIsoInfo   = false ;
+  int  nDumpedEvents = 0     ;
+  ofstream outTextFile;
+  std::string outTextFilename  = name+"_log.txt";
+  outTextFile.open(outTextFilename.c_str());
+
   for (Long64_t jentry=0; jentry<nentries;jentry++) {
       Long64_t ientry = LoadTree(jentry);
       if (ientry < 0) break;
@@ -195,7 +206,20 @@ void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
       // Pass Trigger, filters, good vertices
       if (!firedHLT_PFHT800_v2 || !passed_CSCTightHaloFilter || !passed_goodVertices || !passed_eeBadScFilter) continue;
       n_trig++;
-
+      passMETfilterList=true;
+      auto rItr(list.find(runno));
+      if (rItr != list.end()) {
+        if (rItr->second.find(evtno) != rItr->second.end()){
+          if (dumpBigEvents && debugFlagMETList) {
+            sprintf(messageBuffer, "Event in MET list skipped: run number %d lumi section %d event number %lld\n", runno, lumiblock, evtno);
+            outTextFile << messageBuffer;
+            }
+            passMETfilterList = false;
+            continue;
+          }
+        }
+      if (!passMETfilterList) cout << "ERROR! This event should be filtered!" << endl;
+  
       njets      -> Fill(NJets);
       nelectrons -> Fill(NElectrons);
       nphotons   -> Fill(NPhotons);
@@ -264,7 +288,7 @@ void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
                if (JetMuonEt>0.8*jetEt) {
                  passIso = false;
                  if (debugFlag) {
-                   sprintf(messageBuffer, "Jet number %d failed isolation with Muon number %d  in run number %d lumi section %d event number %d\n", iJet, iMuon, runno, lumiblock, evtno);
+                   sprintf(messageBuffer, "Jet number %d failed isolation with Muon number %d  in run number %d lumi section %d event number %lld\n", iJet, iMuon, runno, lumiblock, evtno);
                    cout << messageBuffer;
                  }
                  break;
@@ -281,7 +305,7 @@ void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
               if (JetElectronEt > 0.7*jetEt) {
                 passIso = false;
                 if (debugFlag) {
-                  sprintf(messageBuffer, "Jet number %d failed isolation with Electron number %d  in run number %d lumi section %d event number %d\n", iJet, iElectron, runno, lumiblock, evtno);
+                  sprintf(messageBuffer, "Jet number %d failed isolation with Electron number %d  in run number %d lumi section %d event number %lld\n", iJet, iElectron, runno, lumiblock, evtno);
                   cout << messageBuffer;
                 }
                 break;
@@ -298,7 +322,7 @@ void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
               if (JetPhotonEt>0.5*jetEt) {
                 passIso = false;
                 if (debugFlag) {
-                  sprintf(messageBuffer, "Jet number %d failed isolation with Photon number %d  in run number %d lumi section %d event number %d\n", iJet, iPhoton, runno, lumiblock, evtno);
+                  sprintf(messageBuffer, "Jet number %d failed isolation with Photon number %d  in run number %d lumi section %d event number %lld\n", iJet, iPhoton, runno, lumiblock, evtno);
                   cout << messageBuffer;
                 }
                 break;
@@ -317,7 +341,7 @@ void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
         jet_phi_et50 -> Fill(JetPhi[iJet], weight);
         n_jet_et50++;
         if (debugFlag) {
-          sprintf(messageBuffer, "Jet number %d passed isolation in run number %d lumi section %d event number %d.\n       It had Px=%f and Py=%f\n", iJet, runno, lumiblock, evtno, JetPx[iJet], JetPy[iJet]);
+          sprintf(messageBuffer, "Jet number %d passed isolation in run number %d lumi section %d event number %lld.\n       It had Px=%f and Py=%f\n", iJet, runno, lumiblock, evtno, JetPx[iJet], JetPy[iJet]);
           cout << messageBuffer;
         }
       }  
@@ -344,7 +368,7 @@ void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
               if (EleEt[iElectron]<0.7*jetEt) {
                 passIso = false;
                 if (debugFlag) {
-                  sprintf(messageBuffer, "Electron number %d failed isolation with Jet number %d  in run number %d lumi section %d event number %d\n", iElectron, iJet, runno, lumiblock, evtno);
+                  sprintf(messageBuffer, "Electron number %d failed isolation with Jet number %d  in run number %d lumi section %d event number %lld\n", iElectron, iJet, runno, lumiblock, evtno);
                   cout << messageBuffer;
                 }
                 break;
@@ -359,7 +383,7 @@ void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
             if (MuEt[iMuon]>50 and MuPFdBiso[iMuon] < 0.15 and dR(EleEta[iElectron],ElePhi[iElectron], MuEta[iMuon], MuPhi[iMuon]) < 0.05) {
               passIso = false;
               if (debugFlag) {
-                sprintf(messageBuffer, "Electron number %d failed isolation with Muon number %d  in run number %d lumi section %d event number %d\n", iElectron, iMuon, runno, lumiblock, evtno);
+                sprintf(messageBuffer, "Electron number %d failed isolation with Muon number %d  in run number %d lumi section %d event number %lld\n", iElectron, iMuon, runno, lumiblock, evtno);
                 cout << messageBuffer;
               }
              break;
@@ -369,7 +393,7 @@ void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
          EleEtsum += EleEt[iElectron];
          n_ele_et50++;
          if (debugFlag) {
-            sprintf(messageBuffer, "Ele number %d passed isolation in run number %d lumi section %d event number %d.      \n It had Px=%f and Py=%f\n", iElectron, runno, lumiblock, evtno, ElePx[iElectron], ElePy[iElectron]);
+            sprintf(messageBuffer, "Ele number %d passed isolation in run number %d lumi section %d event number %lld. \n It had Px=%f and Py=%f\n", iElectron, runno, lumiblock, evtno, ElePx[iElectron], ElePy[iElectron]);
             cout << messageBuffer;
          }
        }
@@ -394,7 +418,7 @@ void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
             hdR_PhoMuo->Fill(dR(PhEta[iPhoton], PhPhi[iPhoton], MuEta[iMuon], MuPhi[iMuon]));
             if (MuEt[iMuon]>50 and MuPFdBiso[iMuon] < 0.15 and dR(PhEta[iPhoton], PhPhi[iPhoton], MuEta[iMuon], MuPhi[iMuon]) < 0.05) {
               if (debugFlag) {
-                sprintf(messageBuffer, "Photon number %d failed isolation with Muon number %d  in run number %d lumi section %d event number %d\n", iPhoton, iMuon, runno, lumiblock, evtno);
+                sprintf(messageBuffer, "Photon number %d failed isolation with Muon number %d  in run number %d lumi section %d event number %lld\n", iPhoton, iMuon, runno, lumiblock, evtno);
                 cout << messageBuffer;
               }
               passIso = false;
@@ -406,7 +430,7 @@ void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
             hdR_PhoEle->Fill(dR(PhEta[iPhoton], PhPhi[iPhoton], EleEta[iElectron], ElePhi[iElectron]));
             if (EleEt[iElectron]>50 && dR(PhEta[iPhoton], PhPhi[iPhoton], EleEta[iElectron], ElePhi[iElectron]) < 0.05) {
               if (debugFlag) {
-                sprintf(messageBuffer, "Photon number %d failed isolation with Electron number %d  in run number %d lumi section %d event number %d\n", iPhoton, iElectron, runno, lumiblock, evtno);
+                sprintf(messageBuffer, "Photon number %d failed isolation with Electron number %d  in run number %d lumi section %d event number %lld\n", iPhoton, iElectron, runno, lumiblock, evtno);
                 cout << messageBuffer;
               }
               passIso = false;
@@ -418,7 +442,7 @@ void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
           PhoEtsum += PhEt[iPhoton];
           n_pho_et50++;
           if (debugFlag) {
-            sprintf(messageBuffer, "Photon number %d passed isolation in run number %d lumi section %d event number %d.\n      It had Px=%f and Py=%f\n", iPhoton, runno, lumiblock, evtno, PhPx[iPhoton], PhPy[iPhoton]);
+            sprintf(messageBuffer, "Photon number %d passed isolation in run number %d lumi section %d event number %lld.\n      It had Px=%f and Py=%f\n", iPhoton, runno, lumiblock, evtno, PhPx[iPhoton], PhPy[iPhoton]);
             cout << messageBuffer;
             }
           }
@@ -434,7 +458,7 @@ void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
           MuoEtsum += MuEt[iMuon];
           n_muo_et50++;
           if (debugFlag) {
-            sprintf(messageBuffer, "Muon number %d passed isolation in run number %d lumi section %d event number %d.\n       It had Px=%f and Py=%f\n", iMuon, runno, lumiblock, evtno, MuPx[iMuon], MuPy[iMuon]);
+            sprintf(messageBuffer, "Muon number %d passed isolation in run number %d lumi section %d event number %lld.\n       It had Px=%f and Py=%f\n", iMuon, runno, lumiblock, evtno, MuPx[iMuon], MuPy[iMuon]);
           }
         }
         else break;
@@ -501,6 +525,10 @@ void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
   N_vs_ST->Fill(etsum, n_et50, weight);
   multiplicity->Fill(n_et50,  weight);
   ST->Fill(etsum, weight);
+  //if(n_et50 >= 8 and etsum > 1000.0 and debugFlagMETList) sprintf(messageBuffer, "Event number high multiplicity %lld, %d, %d, with ST = %f and MetEtsum = %f + JetEtsum = %f + EleEtsum = %f + PhoEtsum = %f + MuoEtsum = %f and multiplicity = %d", evtno, lumiblock, runno, etsum, MetEtsum, JetEtsum, EleEtsum, PhoEtsum, MuoEtsum, n_et50);
+  //cout << messageBuffer;
+  //if(etsum > 5000.0 and debugFlagMETList) sprintf(messageBuffer, "Event number low multiplicity and high ST %lld, %d, %d, with ST = %f and MetEtsum = %f + JetEtsum = %f + EleEtsum = %f + PhoEtsum = %f + MuoEtsum = %f and multiplicity = %d", evtno, lumiblock, runno, etsum, MetEtsum, JetEtsum, EleEtsum, PhoEtsum, MuoEtsum, n_et50);     
+  //cout << messageBuffer; 
   if(n_et50 >= 8 and etsum > 1000.0) cout << "Event number high multiplicity = " << evtno << " Lumi Section = " << lumiblock << " Run number " << runno << " with jets: " << n_et50 << " ST = " << etsum << " etsum  = MetEtsum + JetEtsum + EleEtsum + PhoEtsum + MuoEtsum "<< " , " << MetEtsum << " , "  << JetEtsum << " , " << EleEtsum << " , " << PhoEtsum << " , " << MuoEtsum << endl;
   if(etsum > 5000.0) cout << "Event number low multiplicity and high ST = " << evtno << " Lumi Section = " << lumiblock << " Run number " << runno << " with jets: " << n_et50 << " ST = " << etsum << " etsum  = MetEtsum + JetEtsum + EleEtsum + PhoEtsum + MuoEtsum "<< " , " << MetEtsum << " , "  << JetEtsum << " , " << EleEtsum << " , " << PhoEtsum << " , " << MuoEtsum << endl;
   
@@ -543,7 +571,7 @@ void FirstBHMacro::Loop(TString name, float weight, std::string jecUnc)
 
   outputTree->Write();
 
-  TFile* file = new TFile("output_"+name+".root", "RECREATE");
+  TFile* file = new TFile(("output_"+name+".root").c_str(), "RECREATE");
   file->mkdir("NObjects");
   file->mkdir("general");
   file->mkdir("JetST");
