@@ -1,0 +1,162 @@
+>>> including systematics
+>>> using the Profile Likelihood test statistics modified for upper limits (Q_LHC)
+>>> method used to compute upper limit is HybridNew
+>>> random number generator seed is 123456
+Adding /uscms_data/d2/lpcljm/sapta/SUSYSearch/LimitSetting/CMSSW_7_1_5/src to include path
+Adding /cvmfs/cms.cern.ch/slc6_amd64_gcc481/lcg/roofit/5.34.18-cms3//include to include path
+Input workspace 'w': 
+
+RooWorkspace(w) w contents
+
+variables
+---------
+(jerUp_unc,jerUp_unc_In,jesUp_unc,jesUp_unc_In,lumi,lumi_In,n_obs_binbin1,pdf_unc,pdf_unc_In,r,xs_Bkg,xs_Bkg_In)
+
+p.d.f.s
+-------
+SimpleGaussianConstraint::jerUp_unc_Pdf[ x=jerUp_unc mean=jerUp_unc_In sigma=1 ] = 1
+SimpleGaussianConstraint::jesUp_unc_Pdf[ x=jesUp_unc mean=jesUp_unc_In sigma=1 ] = 1
+SimpleGaussianConstraint::lumi_Pdf[ x=lumi mean=lumi_In sigma=1 ] = 1
+RooProdPdf::modelObs_b[ pdf_binbin1_bonly ] = 0.0155458
+RooProdPdf::modelObs_s[ pdf_binbin1 ] = 0.0174938
+RooProdPdf::model_b[ modelObs_b * nuisancePdf ] = 0.0155458
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ] = 0.0174938
+RooProdPdf::nuisancePdf[ lumi_Pdf * jesUp_unc_Pdf * pdf_unc_Pdf * xs_Bkg_Pdf * jerUp_unc_Pdf ] = 1
+RooPoisson::pdf_binbin1[ x=n_obs_binbin1 mean=n_exp_binbin1 ] = 0.0174938
+RooPoisson::pdf_binbin1_bonly[ x=n_obs_binbin1 mean=n_exp_binbin1_bonly ] = 0.0155458
+SimpleGaussianConstraint::pdf_unc_Pdf[ x=pdf_unc mean=pdf_unc_In sigma=1 ] = 1
+SimpleGaussianConstraint::xs_Bkg_Pdf[ x=xs_Bkg mean=xs_Bkg_In sigma=1 ] = 1
+
+functions
+--------
+RooAddition::n_exp_binbin1[ n_exp_binbin1_proc_BH + n_exp_binbin1_proc_Background ] = 114.091
+RooAddition::n_exp_binbin1_bonly[ n_exp_binbin1_proc_Background ] = 113.091
+ProcessNormalization::n_exp_binbin1_proc_BH[ thetaList=(lumi,jesUp_unc,pdf_unc,jerUp_unc) asymmThetaList=() otherFactorList=(r) ] = 1
+ProcessNormalization::n_exp_binbin1_proc_Background[ thetaList=(xs_Bkg) asymmThetaList=() otherFactorList=() ] = 113.091
+
+datasets
+--------
+RooDataSet::data_obs(n_obs_binbin1)
+
+named sets
+----------
+ModelConfig_GlobalObservables:(lumi_In,jesUp_unc_In,pdf_unc_In,xs_Bkg_In,jerUp_unc_In)
+ModelConfig_NuisParams:(lumi,jesUp_unc,pdf_unc,xs_Bkg,jerUp_unc)
+ModelConfig_Observables:(n_obs_binbin1)
+ModelConfig_POI:(r)
+ModelConfig_bonly_GlobalObservables:(lumi_In,jesUp_unc_In,pdf_unc_In,xs_Bkg_In,jerUp_unc_In)
+ModelConfig_bonly_NuisParams:(lumi,jesUp_unc,pdf_unc,xs_Bkg,jerUp_unc)
+ModelConfig_bonly_Observables:(n_obs_binbin1)
+ModelConfig_bonly_POI:(r)
+POI:(r)
+globalObservables:(lumi_In,jesUp_unc_In,pdf_unc_In,xs_Bkg_In,jerUp_unc_In)
+nuisances:(lumi,jesUp_unc,pdf_unc,xs_Bkg,jerUp_unc)
+observables:(n_obs_binbin1)
+
+generic objects
+---------------
+RooStats::ModelConfig::ModelConfig
+RooStats::ModelConfig::ModelConfig_bonly
+RooArgSet::discreteParams
+
+Workspace has a ModelConfig for signal called 'ModelConfig', with contents:
+
+=== Using the following for ModelConfig ===
+Observables:             RooArgSet:: = (n_obs_binbin1)
+Parameters of Interest:  RooArgSet:: = (r)
+Nuisance Parameters:     RooArgSet:: = (lumi,jesUp_unc,pdf_unc,xs_Bkg,jerUp_unc)
+Global Observables:      RooArgSet:: = (lumi_In,jesUp_unc_In,pdf_unc_In,xs_Bkg_In,jerUp_unc_In)
+PDF:                     RooProdPdf::model_s[ modelObs_s * nuisancePdf ] = 0.0174938
+
+Input ModelConfig 'ModelConfig': 
+
+=== Using the following for ModelConfig ===
+Observables:             RooArgSet:: = (n_obs_binbin1)
+Parameters of Interest:  RooArgSet:: = (r)
+Nuisance Parameters:     RooArgSet:: = (lumi,jesUp_unc,pdf_unc,xs_Bkg,jerUp_unc)
+Global Observables:      RooArgSet:: = (lumi_In,jesUp_unc_In,pdf_unc_In,xs_Bkg_In,jerUp_unc_In)
+PDF:                     RooProdPdf::model_s[ modelObs_s * nuisancePdf ] = 0.0174938
+
+[#1] INFO:ObjectHandling -- RooWorkspace::import(w) importing RooUniform::prior
+Computing limit starting from observation
+  1) RooRealVar:: n_obs_binbin1 = 127
+Set default minimizer to Minuit2
+Search for upper limit using pre-computed grid of p-values
+  Do HypoTestResult_mh120_r40_3254214843 -> 40 --> 40
+  Do HypoTestResult_mh120_r80_3654839376 -> 80 --> 80
+  Do HypoTestResult_mh120_r50_2610903937 -> 50 --> 50
+  Do HypoTestResult_mh120_r60_2636189635 -> 60 --> 60
+  Do HypoTestResult_mh120_r16_1451798856 -> 16 --> 16
+  Do HypoTestResult_mh120_r70_2848360010 -> 70 --> 70
+  Do HypoTestResult_mh120_r30_2246765692 -> 30 --> 30
+  Do HypoTestResult_mh120_r35_866211266 -> 35 --> 35
+  Do HypoTestResult_mh120_r20_1080280058 -> 20 --> 20
+GRID, as is.
+  - 16  (CLs = 0.612064 +/- 0.0107088)
+  - 20  (CLs = 0.530888 +/- 0.0103201)
+  - 30  (CLs = 0.291136 +/- 0.00811517)
+  - 35  (CLs = 0.226232 +/- 0.00736489)
+  - 40  (CLs = 0.143591 +/- 0.00601312)
+  - 50  (CLs = 0.0445978 +/- 0.00340169)
+  - 60  (CLs = 0.0110691 +/- 0.00172409)
+  - 70  (CLs = 0.00403226 +/- 0.0010401)
+  - 80  (CLs = 0.000549602 +/- 0.000388578)
+Bisecting range [0, 8]
+At r = 40:
+	CLs      = 0.00334448 +/- 0.0033494
+	CLb      = 0.0598 +/- 0.00335333
+	CLsplusb = 0.0002 +/- 0.00019998
+
+    Midpoint 4 value 0.00334448 +/- 0.0033494
+    Replacing Max
+Bisecting range [0, 4]
+At r = 30:
+	CLs      = 0.00869565 +/- 0.00873165
+	CLb      = 0.023 +/- 0.00211995
+	CLsplusb = 0.0002 +/- 0.00019998
+
+    Midpoint 2 value 0.00869565 +/- 0.00873165
+    Replacing Max
+Final range [0, 2]
+   Updaing point 0 (r 16)
+At r = 16:
+	CLs      = 0.162393 +/- 0.0400353
+	CLb      = 0.0234 +/- 0.00213787
+	CLsplusb = 0.0038 +/- 0.000870122
+
+   Updaing point 1 (r 20)
+At r = 20:
+	CLs      = 0.130221 +/- 0.0188371
+	CLb      = 0.0814 +/- 0.00386714
+	CLsplusb = 0.0106 +/- 0.00144828
+
+   Point 2 (r 30) was already updated during search.
+  Will not use point 3 (r 35)
+  Will not use point 4 (r 40)
+  Will not use point 5 (r 50)
+  Will not use point 6 (r 60)
+  Will not use point 7 (r 70)
+  Will not use point 8 (r 80)
+  r 16.00: CLs = 0.1624 +/- 0.0400
+  r 20.00: CLs = 0.1302 +/- 0.0188
+  r 30.00: CLs = 0.0087 +/- 0.0087
+ after scan x ~ 30, bounds [ 20, 30]
+
+ -- HybridNew, before fit -- 
+Limit: r < 30 +/- 10 [20, 30]
+
+****************************************
+Minimizer is Minuit2 / Migrad
+Chi2                      =  1.84558e-07
+NDf                       =            0
+Edm                       =  1.84545e-07
+NCalls                    =           91
+p0                        =         0.05                      	 (fixed)
+p1                        =    -0.270616   +/-   0.101389    
+p2                        =      23.5369   +/-   1.35632     
+Fit to 2 points: 23.5369 +/- 1.35632
+
+ -- Hybrid New -- 
+Limit: r < 23.5369 +/- 1.35632 @ 95% CL
+Total toys: 0
+Done in 0.00 min (cpu), 0.01 min (real)

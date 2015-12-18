@@ -1,0 +1,202 @@
+>>> including systematics
+>>> using the Profile Likelihood test statistics modified for upper limits (Q_LHC)
+>>> method used to compute upper limit is HybridNew
+>>> Using OpenSSL to get a really random seed 
+>>> Used OpenSSL to get a really random seed -1764964536
+Adding /uscms_data/d2/lpcljm/sapta/SUSYSearch/LimitSetting/CMSSW_7_1_5/src to include path
+Adding /cvmfs/cms.cern.ch/slc6_amd64_gcc481/lcg/roofit/5.34.18-cms3//include to include path
+Input workspace 'w': 
+
+RooWorkspace(w) w contents
+
+variables
+---------
+(jerUp_unc,jerUp_unc_In,jesUp_unc,jesUp_unc_In,lumi,lumi_In,n_obs_binbin1,pdf_unc,pdf_unc_In,r,xs_Bkg,xs_Bkg_In)
+
+p.d.f.s
+-------
+SimpleGaussianConstraint::jerUp_unc_Pdf[ x=jerUp_unc mean=jerUp_unc_In sigma=1 ] = 1
+SimpleGaussianConstraint::jesUp_unc_Pdf[ x=jesUp_unc mean=jesUp_unc_In sigma=1 ] = 1
+SimpleGaussianConstraint::lumi_Pdf[ x=lumi mean=lumi_In sigma=1 ] = 1
+RooProdPdf::modelObs_b[ pdf_binbin1_bonly ] = 0.0755153
+RooProdPdf::modelObs_s[ pdf_binbin1 ] = 0.0395424
+RooProdPdf::model_b[ modelObs_b * nuisancePdf ] = 0.0755153
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ] = 0.0395424
+RooProdPdf::nuisancePdf[ lumi_Pdf * jesUp_unc_Pdf * pdf_unc_Pdf * xs_Bkg_Pdf * jerUp_unc_Pdf ] = 1
+RooPoisson::pdf_binbin1[ x=n_obs_binbin1 mean=n_exp_binbin1 ] = 0.0395424
+RooPoisson::pdf_binbin1_bonly[ x=n_obs_binbin1 mean=n_exp_binbin1_bonly ] = 0.0755153
+SimpleGaussianConstraint::pdf_unc_Pdf[ x=pdf_unc mean=pdf_unc_In sigma=1 ] = 1
+SimpleGaussianConstraint::xs_Bkg_Pdf[ x=xs_Bkg mean=xs_Bkg_In sigma=1 ] = 1
+
+functions
+--------
+RooAddition::n_exp_binbin1[ n_exp_binbin1_proc_BH + n_exp_binbin1_proc_Background ] = 6.17981
+RooAddition::n_exp_binbin1_bonly[ n_exp_binbin1_proc_Background ] = 5.17981
+ProcessNormalization::n_exp_binbin1_proc_BH[ thetaList=(lumi,jesUp_unc,pdf_unc) asymmThetaList=() otherFactorList=(r) ] = 1
+ProcessNormalization::n_exp_binbin1_proc_Background[ thetaList=(xs_Bkg,jerUp_unc) asymmThetaList=() otherFactorList=() ] = 5.17981
+
+datasets
+--------
+RooDataSet::data_obs(n_obs_binbin1)
+
+named sets
+----------
+ModelConfig_GlobalObservables:(lumi_In,jesUp_unc_In,pdf_unc_In,xs_Bkg_In,jerUp_unc_In)
+ModelConfig_NuisParams:(lumi,jesUp_unc,pdf_unc,xs_Bkg,jerUp_unc)
+ModelConfig_Observables:(n_obs_binbin1)
+ModelConfig_POI:(r)
+ModelConfig_bonly_GlobalObservables:(lumi_In,jesUp_unc_In,pdf_unc_In,xs_Bkg_In,jerUp_unc_In)
+ModelConfig_bonly_NuisParams:(lumi,jesUp_unc,pdf_unc,xs_Bkg,jerUp_unc)
+ModelConfig_bonly_Observables:(n_obs_binbin1)
+ModelConfig_bonly_POI:(r)
+POI:(r)
+globalObservables:(lumi_In,jesUp_unc_In,pdf_unc_In,xs_Bkg_In,jerUp_unc_In)
+nuisances:(lumi,jesUp_unc,pdf_unc,xs_Bkg,jerUp_unc)
+observables:(n_obs_binbin1)
+
+generic objects
+---------------
+RooStats::ModelConfig::ModelConfig
+RooStats::ModelConfig::ModelConfig_bonly
+RooArgSet::discreteParams
+
+Workspace has a ModelConfig for signal called 'ModelConfig', with contents:
+
+=== Using the following for ModelConfig ===
+Observables:             RooArgSet:: = (n_obs_binbin1)
+Parameters of Interest:  RooArgSet:: = (r)
+Nuisance Parameters:     RooArgSet:: = (lumi,jesUp_unc,pdf_unc,xs_Bkg,jerUp_unc)
+Global Observables:      RooArgSet:: = (lumi_In,jesUp_unc_In,pdf_unc_In,xs_Bkg_In,jerUp_unc_In)
+PDF:                     RooProdPdf::model_s[ modelObs_s * nuisancePdf ] = 0.0395424
+
+Input ModelConfig 'ModelConfig': 
+
+=== Using the following for ModelConfig ===
+Observables:             RooArgSet:: = (n_obs_binbin1)
+Parameters of Interest:  RooArgSet:: = (r)
+Nuisance Parameters:     RooArgSet:: = (lumi,jesUp_unc,pdf_unc,xs_Bkg,jerUp_unc)
+Global Observables:      RooArgSet:: = (lumi_In,jesUp_unc_In,pdf_unc_In,xs_Bkg_In,jerUp_unc_In)
+PDF:                     RooProdPdf::model_s[ modelObs_s * nuisancePdf ] = 0.0395424
+
+[#1] INFO:ObjectHandling -- RooWorkspace::import(w) importing RooUniform::prior
+Computing limit starting from observation
+  1) RooRealVar:: n_obs_binbin1 = 2
+Set default minimizer to Minuit2
+  r = 3 +/- 0
+[#1] INFO:Minization --  Including the following contraint terms in minimization: (nuisancePdf)
+[#1] INFO:Fitting -- RooAddition::defaultErrorLevel(nll_model_s_data_obs_with_constr) Summation contains a RooNLLVar, using its error level
+Minuit2Minimizer: Minimize with max-calls 2500 convergence for edm < 0.01 strategy 1
+MnSeedGenerator: for initial parameters FCN = 7.17811
+MnSeedGenerator: Initial state:   - FCN =   7.178113094447 Edm =     0.809539 NCalls =     21
+VariableMetric: start iterating until Edm is < 1e-05
+VariableMetric: Initial state   - FCN =   7.178113094447 Edm =     0.809539 NCalls =     21
+VariableMetric: Iteration #   1 - FCN =   6.248260451834 Edm =    0.0078454 NCalls =     34
+VariableMetric: Iteration #   2 - FCN =   6.239682551691 Edm =   4.5078e-05 NCalls =     45
+VariableMetric: Iteration #   3 - FCN =   6.239625714344 Edm =  6.80927e-07 NCalls =     57
+VariableMetric: After Hessian   - FCN =   6.239625714344 Edm =  7.43083e-07 NCalls =     88
+Number of iterations 5
+----------> Iteration 0
+            FVAL = 7.17811309445 Edm = 0.809538500208 Nfcn = 21
+            Error matrix change = 1
+            Parameters :  p0 = 0 p1 = 0 p2 = 0 p3 = 0 p4 = 0
+----------> Iteration 1
+            FVAL = 6.24826045183 Edm = 0.00784539860429 Nfcn = 34
+            Error matrix change = 0.51125
+            Parameters :  p0 = -0.151056 p1 = 0 p2 = 0 p3 = 0 p4 = -0.652255
+----------> Iteration 2
+            FVAL = 6.23968255169 Edm = 4.50780397307e-05 Nfcn = 45
+            Error matrix change = 0.261233
+            Parameters :  p0 = -0.0311238 p1 = 0 p2 = 0 p3 = 0 p4 = -0.67545
+----------> Iteration 3
+            FVAL = 6.23962571434 Edm = 6.80927377663e-07 Nfcn = 57
+            Error matrix change = 0.145395
+            Parameters :  p0 = -0.0272089 p1 = 0 p2 = 0 p3 = 0 p4 = -0.680919
+----------> Iteration 4
+            FVAL = 6.23962571434 Edm = 7.43083394257e-07 Nfcn = 88
+            Error matrix change = 0
+            Parameters :  p0 = -0.0272089 p1 = 0 p2 = 0 p3 = 0 p4 = -0.680919
+Minuit2Minimizer : Valid minimum - status = 0
+FVAL  = 6.23962571434427815
+Edm   = 7.43083394257044043e-07
+Nfcn  = 88
+jerUp_unc	  = -0.0272089	 +/-  0.995998	(limited)
+jesUp_unc	  = 0	 +/-  0.996602	(limited)
+lumi	  = 0	 +/-  0.996602	(limited)
+pdf_unc	  = 0	 +/-  0.996602	(limited)
+xs_Bkg	  = -0.680919	 +/-  0.540996	(limited)
+Zero signal fit
+   0) jerUp_unc                      = -0.0272089
+   1) jesUp_unc                      =         0
+   2) lumi                           =         0
+   3) pdf_unc                        =         0
+   4) xs_Bkg                         = -0.680919
+
+Fitting of the background hypothesis done in 0.300281 s
+[#1] INFO:Fitting -- RooAddition::defaultErrorLevel(nll_model_s_data_obs_with_constr) Summation contains a RooNLLVar, using its error level
+Minuit2Minimizer: Minimize with max-calls 2500 convergence for edm < 0.01 strategy 1
+MnSeedGenerator: for initial parameters FCN = 7.75419
+MnSeedGenerator: Initial state:   - FCN =   7.754192605097 Edm =     0.179543 NCalls =     21
+VariableMetric: start iterating until Edm is < 1e-05
+VariableMetric: Initial state   - FCN =   7.754192605097 Edm =     0.179543 NCalls =     21
+VariableMetric: Iteration #   1 - FCN =   7.563647331796 Edm =   0.00136968 NCalls =     33
+VariableMetric: Iteration #   2 - FCN =   7.562004464956 Edm =  5.52063e-06 NCalls =     45
+VariableMetric: Iteration #   3 - FCN =   7.561998430435 Edm =  2.80766e-10 NCalls =     57
+VariableMetric: After Hessian   - FCN =   7.561998430435 Edm =  2.78031e-10 NCalls =     88
+Number of iterations 5
+----------> Iteration 0
+            FVAL = 7.7541926051 Edm = 0.179542654477 Nfcn = 21
+            Error matrix change = 1
+            Parameters :  p0 = -0.0272089 p1 = 0 p2 = 0 p3 = 0 p4 = -0.680919
+----------> Iteration 1
+            FVAL = 7.5636473318 Edm = 0.00136967582377 Nfcn = 33
+            Error matrix change = 0.519544
+            Parameters :  p0 = -0.0717342 p1 = -0.100041 p2 = -0.0961753 p3 = -0.119174 p4 = -1.02948
+----------> Iteration 2
+            FVAL = 7.56200446496 Edm = 5.52063453829e-06 Nfcn = 45
+            Error matrix change = 0.273489
+            Parameters :  p0 = -0.0421919 p1 = -0.0842161 p2 = -0.080912 p3 = -0.100667 p4 = -1.05678
+----------> Iteration 3
+            FVAL = 7.56199843043 Edm = 2.80765714587e-10 Nfcn = 57
+            Error matrix change = 0.153321
+            Parameters :  p0 = -0.0440546 p1 = -0.0850061 p2 = -0.0816854 p3 = -0.101514 p4 = -1.05842
+----------> Iteration 4
+            FVAL = 7.56199843043 Edm = 2.78030997307e-10 Nfcn = 88
+            Error matrix change = 0
+            Parameters :  p0 = -0.0440546 p1 = -0.0850061 p2 = -0.0816854 p3 = -0.101514 p4 = -1.05842
+Minuit2Minimizer : Valid minimum - status = 0
+FVAL  = 7.56199843043495079
+Edm   = 2.78030997306934564e-10
+Nfcn  = 88
+jerUp_unc	  = -0.0440546	 +/-  0.996124	(limited)
+jesUp_unc	  = -0.0850061	 +/-  0.993831	(limited)
+lumi	  = -0.0816854	 +/-  0.994044	(limited)
+pdf_unc	  = -0.101514	 +/-  0.992648	(limited)
+xs_Bkg	  = -1.05842	 +/-  0.663241	(limited)
+Reference signal fit
+   0) jerUp_unc                      = -0.0440546
+   1) jesUp_unc                      = -0.0850061
+   2) lumi                           = -0.0816854
+   3) pdf_unc                        = -0.101514
+   4) xs_Bkg                         =  -1.05842
+
+Fitting of the signal-plus-background hypothesis done in 0.00230694 s
+      Evaluation of p-values done in  6.81848 s
+	CLs = 0.198653 +/- 0.0268852
+      Evaluation of p-values done in  5.54494 s
+	CLs = 0.207317 +/- 0.0198262
+      Evaluation of p-values done in  6.07305 s
+	CLs = 0.176941 +/- 0.014726
+      Evaluation of p-values done in  5.96045 s
+	CLs = 0.173913 +/- 0.0126066
+      Evaluation of p-values done in  5.7352 s
+	CLs = 0.172647 +/- 0.011187
+	CLs      = 0.172647 +/- 0.011187
+	CLb      = 0.2954 +/- 0.00645196
+	CLsplusb = 0.051 +/- 0.00311124
+
+Hybrid result saved as HypoTestResult_mh120_r3_1010785537 in higgsCombineTest.HybridNew.mH120.-1764964536.root : higgsCombineTest.HybridNew.mH120.-1764964536.root:/toys
+
+ -- Hybrid New -- 
+CLs = 0.172647 +/- 0.011187
+Total toys: 10000
+Done in 0.00 min (cpu), 0.51 min (real)

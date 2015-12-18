@@ -1,0 +1,756 @@
+>>> including systematics
+>>> using the Profile Likelihood test statistics modified for upper limits (Q_LHC)
+>>> method used to compute upper limit is HybridNew
+>>> Using OpenSSL to get a really random seed 
+>>> Used OpenSSL to get a really random seed -1870513598
+Adding /uscms_data/d2/lpcljm/sapta/SUSYSearch/LimitSetting/CMSSW_7_1_5/src to include path
+Adding /cvmfs/cms.cern.ch/slc6_amd64_gcc481/lcg/roofit/5.34.18-cms3//include to include path
+Input workspace 'w': 
+
+RooWorkspace(w) w contents
+
+variables
+---------
+(jerUp_unc,jerUp_unc_In,jesUp_unc,jesUp_unc_In,lumi,lumi_In,n_obs_binbin1,pdf_unc,pdf_unc_In,r,xs_Bkg,xs_Bkg_In)
+
+p.d.f.s
+-------
+SimpleGaussianConstraint::jerUp_unc_Pdf[ x=jerUp_unc mean=jerUp_unc_In sigma=1 ] = 1
+SimpleGaussianConstraint::jesUp_unc_Pdf[ x=jesUp_unc mean=jesUp_unc_In sigma=1 ] = 1
+SimpleGaussianConstraint::lumi_Pdf[ x=lumi mean=lumi_In sigma=1 ] = 1
+RooProdPdf::modelObs_b[ pdf_binbin1_bonly ] = 1.88978e-16
+RooProdPdf::modelObs_s[ pdf_binbin1 ] = 1.77818e-16
+RooProdPdf::model_b[ modelObs_b * nuisancePdf ] = 1.88978e-16
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ] = 1.77818e-16
+RooProdPdf::nuisancePdf[ lumi_Pdf * jesUp_unc_Pdf * pdf_unc_Pdf * xs_Bkg_Pdf * jerUp_unc_Pdf ] = 1
+RooPoisson::pdf_binbin1[ x=n_obs_binbin1 mean=n_exp_binbin1 ] = 1.77818e-16
+RooPoisson::pdf_binbin1_bonly[ x=n_obs_binbin1 mean=n_exp_binbin1_bonly ] = 1.88978e-16
+SimpleGaussianConstraint::pdf_unc_Pdf[ x=pdf_unc mean=pdf_unc_In sigma=1 ] = 1
+SimpleGaussianConstraint::xs_Bkg_Pdf[ x=xs_Bkg mean=xs_Bkg_In sigma=1 ] = 1
+
+functions
+--------
+RooAddition::n_exp_binbin1[ n_exp_binbin1_proc_BH + n_exp_binbin1_proc_Background ] = 16128.2
+RooAddition::n_exp_binbin1_bonly[ n_exp_binbin1_proc_Background ] = 16127.2
+ProcessNormalization::n_exp_binbin1_proc_BH[ thetaList=(lumi,jesUp_unc,pdf_unc) asymmThetaList=() otherFactorList=(r) ] = 1
+ProcessNormalization::n_exp_binbin1_proc_Background[ thetaList=(xs_Bkg,jerUp_unc) asymmThetaList=() otherFactorList=() ] = 16127.2
+
+datasets
+--------
+RooDataSet::data_obs(n_obs_binbin1)
+
+named sets
+----------
+ModelConfig_GlobalObservables:(lumi_In,jesUp_unc_In,pdf_unc_In,xs_Bkg_In,jerUp_unc_In)
+ModelConfig_NuisParams:(lumi,jesUp_unc,pdf_unc,xs_Bkg,jerUp_unc)
+ModelConfig_Observables:(n_obs_binbin1)
+ModelConfig_POI:(r)
+ModelConfig_bonly_GlobalObservables:(lumi_In,jesUp_unc_In,pdf_unc_In,xs_Bkg_In,jerUp_unc_In)
+ModelConfig_bonly_NuisParams:(lumi,jesUp_unc,pdf_unc,xs_Bkg,jerUp_unc)
+ModelConfig_bonly_Observables:(n_obs_binbin1)
+ModelConfig_bonly_POI:(r)
+POI:(r)
+globalObservables:(lumi_In,jesUp_unc_In,pdf_unc_In,xs_Bkg_In,jerUp_unc_In)
+nuisances:(lumi,jesUp_unc,pdf_unc,xs_Bkg,jerUp_unc)
+observables:(n_obs_binbin1)
+
+generic objects
+---------------
+RooStats::ModelConfig::ModelConfig
+RooStats::ModelConfig::ModelConfig_bonly
+RooArgSet::discreteParams
+
+Workspace has a ModelConfig for signal called 'ModelConfig', with contents:
+
+=== Using the following for ModelConfig ===
+Observables:             RooArgSet:: = (n_obs_binbin1)
+Parameters of Interest:  RooArgSet:: = (r)
+Nuisance Parameters:     RooArgSet:: = (lumi,jesUp_unc,pdf_unc,xs_Bkg,jerUp_unc)
+Global Observables:      RooArgSet:: = (lumi_In,jesUp_unc_In,pdf_unc_In,xs_Bkg_In,jerUp_unc_In)
+PDF:                     RooProdPdf::model_s[ modelObs_s * nuisancePdf ] = 1.77818e-16
+
+Input ModelConfig 'ModelConfig': 
+
+=== Using the following for ModelConfig ===
+Observables:             RooArgSet:: = (n_obs_binbin1)
+Parameters of Interest:  RooArgSet:: = (r)
+Nuisance Parameters:     RooArgSet:: = (lumi,jesUp_unc,pdf_unc,xs_Bkg,jerUp_unc)
+Global Observables:      RooArgSet:: = (lumi_In,jesUp_unc_In,pdf_unc_In,xs_Bkg_In,jerUp_unc_In)
+PDF:                     RooProdPdf::model_s[ modelObs_s * nuisancePdf ] = 1.77818e-16
+
+[#1] INFO:ObjectHandling -- RooWorkspace::import(w) importing RooUniform::prior
+Computing limit starting from observation
+  1) RooRealVar:: n_obs_binbin1 = 15146
+Set default minimizer to Minuit2
+  r = 5500 +/- 0
+[#1] INFO:Minization --  Including the following contraint terms in minimization: (nuisancePdf)
+[#1] INFO:Fitting -- RooAddition::defaultErrorLevel(nll_model_s_data_obs_with_constr) Summation contains a RooNLLVar, using its error level
+Minuit2Minimizer: Minimize with max-calls 2500 convergence for edm < 0.01 strategy 1
+MnSeedGenerator: for initial parameters FCN = 40.7996
+MnSeedGenerator: Initial state:   - FCN =   40.79959143765 Edm =      58.3719 NCalls =     21
+VariableMetric: start iterating until Edm is < 1e-05
+VariableMetric: Initial state   - FCN =   40.79959143765 Edm =      58.3719 NCalls =     21
+VariableMetric: Iteration #   1 - FCN =    10.6815612185 Edm =    0.0110748 NCalls =     33
+VariableMetric: Iteration #   2 - FCN =   10.66402286414 Edm =   0.00869972 NCalls =     45
+VariableMetric: Iteration #   3 - FCN =    10.4840712299 Edm =  2.17211e-05 NCalls =     59
+VariableMetric: Iteration #   4 - FCN =   10.48404896106 Edm =  7.66219e-09 NCalls =     70
+VariableMetric: After Hessian   - FCN =   10.48404896106 Edm =  7.54735e-09 NCalls =    101
+Number of iterations 6
+----------> Iteration 0
+            FVAL = 40.7995914377 Edm = 58.3718845222 Nfcn = 21
+            Error matrix change = 1
+            Parameters :  p0 = 0 p1 = 0 p2 = 0 p3 = 0 p4 = 0
+----------> Iteration 1
+            FVAL = 10.6815612185 Edm = 0.0110747813567 Nfcn = 33
+            Error matrix change = 0.502354
+            Parameters :  p0 = -0.785348 p1 = 0 p2 = 0 p3 = 0 p4 = -0.305857
+----------> Iteration 2
+            FVAL = 10.6640228641 Edm = 0.00869971523169 Nfcn = 45
+            Error matrix change = 0.266353
+            Parameters :  p0 = -0.73775 p1 = 0 p2 = 0 p3 = 0 p4 = -0.309631
+----------> Iteration 3
+            FVAL = 10.4840712299 Edm = 2.17210812805e-05 Nfcn = 59
+            Error matrix change = 0.272069
+            Parameters :  p0 = -0.196582 p1 = 0 p2 = 0 p3 = 0 p4 = -0.523908
+----------> Iteration 4
+            FVAL = 10.4840489611 Edm = 7.66219013688e-09 Nfcn = 70
+            Error matrix change = 0.136425
+            Parameters :  p0 = -0.197132 p1 = 0 p2 = 0 p3 = 0 p4 = -0.524224
+----------> Iteration 5
+            FVAL = 10.4840489611 Edm = 7.54734874961e-09 Nfcn = 101
+            Error matrix change = 0
+            Parameters :  p0 = -0.197132 p1 = 0 p2 = 0 p3 = 0 p4 = -0.524224
+Minuit2Minimizer : Valid minimum - status = 0
+FVAL  = 10.4840489610575389
+Edm   = 7.54734874961203824e-09
+Nfcn  = 101
+jerUp_unc	  = -0.197132	 +/-  0.933809	(limited)
+jesUp_unc	  = 0	 +/-  0.996602	(limited)
+lumi	  = 0	 +/-  0.996602	(limited)
+pdf_unc	  = 0	 +/-  0.996602	(limited)
+xs_Bkg	  = -0.524224	 +/-  0.358226	(limited)
+Zero signal fit
+   0) jerUp_unc                      = -0.197132
+   1) jesUp_unc                      =         0
+   2) lumi                           =         0
+   3) pdf_unc                        =         0
+   4) xs_Bkg                         = -0.524224
+
+Fitting of the background hypothesis done in 0.321601 s
+[#1] INFO:Fitting -- RooAddition::defaultErrorLevel(nll_model_s_data_obs_with_constr) Summation contains a RooNLLVar, using its error level
+[#0] ERROR:Eval -- RooAbsReal::logEvalError(model_s) evaluation error, 
+ origin       : RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+ message      : getLogVal() top-level p.d.f evaluates to zero
+ server values: !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.854845)
+Minuit2Minimizer: Minimize with max-calls 2500 convergence for edm < 0.01 strategy 1
+MnSeedGenerator: for initial parameters FCN = 713.841
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.179845, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.857634)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.214417, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.851809)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.0242285, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.871361)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.369915, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.813976)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0.018456, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.854699)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=-0.018456, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.854699)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0.184539, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.840412)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=-0.184539, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.840412)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0.018456, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.854699)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=-0.018456, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.854699)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0.184539, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.840412)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=-0.184539, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.840412)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=0.018456, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.854699)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=-0.018456, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.854699)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=0.184539, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.840412)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=-0.184539, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.840412)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=-0.517609
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.857795)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=-0.530838
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.851867)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=-0.458057
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.883081)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=-0.590343
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.823919)
+
+MnSeedGenerator: Initial state:   - FCN =    713.841094063 Edm =            0 NCalls =     21
+MnSeedGenerator: Negative G2 found - new state:   - FCN =    713.841094063 Edm =            0 NCalls =     21
+VariableMetric: start iterating until Edm is < 1e-05
+VariableMetric: Initial state   - FCN =    713.841094063 Edm =            0 NCalls =     21
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.854845)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.0242285, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.871361)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.369915, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.813976)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=1.51993, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.274582)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.0242285, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.871361)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.369915, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.813976)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=1.51993, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.274582)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0.184539, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.840412)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=-0.184539, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.840412)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=1.82429, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.161887)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0.299169, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.817433)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=-0.299169, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.817433)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=2.90227, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.0126712)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0.299169, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.817433)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=-0.299169, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.817433)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=2.90227, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.0126712)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0.184539, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.840412)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=-0.184539, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.840412)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=1.82429, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.161887)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0.515091, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.748642)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=-0.515091, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.748642)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=3.41724, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.00248968)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0.356845, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.802114)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=-0.356845, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.802114)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=3.41724, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.00248968)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=0.184539, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.840412)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=-0.184539, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.840412)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=1.82429, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.161887)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=0.18514, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.840319)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=-0.18514, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.840319)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=1.8301, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.160179)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=-0.458057
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.883081)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=-0.590343
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.823919)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=0.138576
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.971385)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=-0.458057
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.883081)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=-0.590343
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.823919)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=0.138576
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.971385)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.195197, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.855169)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.199067, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.854517)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0.00454594, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.854836)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=-0.00454594, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.854836)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0.00502778, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.854834)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=-0.00502778, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.854834)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=0.00408129, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.854837)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=-0.00408129, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.854837)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=-0.523502
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.855168)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=-0.524945
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.854521)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=1.51993, jesUp_unc=2.90227, lumi=0, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.00407008)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=1.51993, jesUp_unc=0, lumi=3.41724, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.000799702)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=1.51993, jesUp_unc=0, lumi=0, pdf_unc=1.8301, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.0514508)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=1.51993, jesUp_unc=0, lumi=0, pdf_unc=0, xs_Bkg=0.138576
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.312016)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=2.90227, lumi=3.41724, pdf_unc=0, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 3.69039e-05)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=2.90227, lumi=0, pdf_unc=1.8301, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.0023743)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=2.90227, lumi=0, pdf_unc=0, xs_Bkg=0.138576
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.0143986)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=3.41724, pdf_unc=1.8301, xs_Bkg=-0.524224
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.000466511)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=3.41724, pdf_unc=0, xs_Bkg=0.138576
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.00282909)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.197132, jesUp_unc=0, lumi=0, pdf_unc=1.8301, xs_Bkg=0.138576
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.182016)
+
+VariableMetric: After Hessian   - FCN =    713.841094063 Edm =       569170 NCalls =     90
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=0.0838986, jesUp_unc=0.0778531, lumi=0.0755671, pdf_unc=0.0601396, xs_Bkg=6.395
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 1.30217e-09)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.0917838, jesUp_unc=0.0291884, lumi=0.0283313, pdf_unc=0.0225472, xs_Bkg=1.1291
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.525859)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.205075, jesUp_unc=-0.00220121, lumi=-0.00213657, pdf_unc=-0.00170036, xs_Bkg=3.72092
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 0.000964733)
+
+VariableMetric: Iteration #   2 - FCN =   26.78746523357 Edm =      21019.5 NCalls =    119
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.246895, jesUp_unc=-0.0305291, lumi=-0.0279952, pdf_unc=-0.036808, xs_Bkg=5.95117
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 1.97472e-08)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.22907, jesUp_unc=-0.0128286, lumi=-0.0120628, pdf_unc=-0.0130526, xs_Bkg=5.81027
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 4.5475e-08)
+
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.351307, jesUp_unc=-0.13424, lumi=-0.121348, pdf_unc=-0.175989, xs_Bkg=6.5236
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 5.22581e-10)
+
+VariableMetric: Iteration #   3 - FCN =   21.82163728568 Edm =      11.8476 NCalls =    141
+[#0] WARNING:Minization -- RooMinimizerFcn: Minimized function has error status.
+Returning maximum FCN so far (713.841) to force MIGRAD to back out of this region. Error log follows
+Parameter values: jerUp_unc=-0.239364, jesUp_unc=-0.0214426, lumi=-0.0198816, pdf_unc=-0.0240865, xs_Bkg=4.65717
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ]
+     getLogVal() top-level p.d.f evaluates to zero @ !pdfs=(modelObs_s = 0/1,nuisancePdf = 1.89448e-05)
+
+VariableMetric: Iteration #   4 - FCN =   21.80753444536 Edm =    0.0336983 NCalls =    154
+VariableMetric: Iteration #   5 - FCN =   20.92999428193 Edm =     0.531042 NCalls =    170
+VariableMetric: Iteration #   6 - FCN =   19.35673898102 Edm =     0.013474 NCalls =    184
+VariableMetric: Iteration #   7 - FCN =   19.34977753212 Edm =  0.000442781 NCalls =    196
+VariableMetric: Iteration #   8 - FCN =   19.34916987711 Edm =  1.85233e-06 NCalls =    208
+VariableMetric: Iteration #   9 - FCN =   19.34905982645 Edm =  4.39114e-05 NCalls =    224
+VariableMetric: Iteration #  10 - FCN =   19.34873532412 Edm =   6.0288e-05 NCalls =    236
+VariableMetric: Iteration #  11 - FCN =   19.34865246959 Edm =  1.40004e-09 NCalls =    248
+VariableMetric: After Hessian   - FCN =   19.34865246959 Edm =  1.98228e-07 NCalls =    279
+Number of iterations 13
+----------> Iteration 0
+            FVAL = 713.841094063 Edm = 0 Nfcn = 21
+            Error matrix change = 1
+            Parameters :  p0 = -0.197132 p1 = 0 p2 = 0 p3 = 0 p4 = -0.524224
+----------> Iteration 1
+            FVAL = 713.841094063 Edm = 569169.536622 Nfcn = 90
+            Error matrix change = 0
+            Parameters :  p0 = -0.197132 p1 = 0 p2 = 0 p3 = 0 p4 = -0.524224
+----------> Iteration 2
+            FVAL = 26.7874652336 Edm = 21019.4694246 Nfcn = 119
+            Error matrix change = 1.64988
+            Parameters :  p0 = -0.223514 p1 = -0.00731116 p2 = -0.00709647 p3 = -0.00564764 p4 = -4.39092
+----------> Iteration 3
+            FVAL = 21.8216372857 Edm = 11.8475704481 Nfcn = 141
+            Error matrix change = 1.44695
+            Parameters :  p0 = -0.234437 p1 = -0.0181576 p2 = -0.0168595 p3 = -0.0202045 p4 = -4.77133
+----------> Iteration 4
+            FVAL = 21.8075344454 Edm = 0.0336982558785 Nfcn = 154
+            Error matrix change = 106.75
+            Parameters :  p0 = -0.234449 p1 = -0.0181658 p2 = -0.0168671 p3 = -0.0202142 p4 = -4.75237
+----------> Iteration 5
+            FVAL = 20.9299942819 Edm = 0.531041851223 Nfcn = 170
+            Error matrix change = 53.861
+            Parameters :  p0 = -0.589596 p1 = -0.267961 p2 = -0.246019 p3 = -0.320684 p4 = -4.30529
+----------> Iteration 6
+            FVAL = 19.356738981 Edm = 0.0134740003485 Nfcn = 184
+            Error matrix change = 27.1206
+            Parameters :  p0 = -1.36495 p1 = -0.814905 p2 = -0.748012 p3 = -0.977689 p4 = -3.70414
+----------> Iteration 7
+            FVAL = 19.3497775321 Edm = 0.000442780789971 Nfcn = 196
+            Error matrix change = 13.7084
+            Parameters :  p0 = -1.35209 p1 = -0.805666 p2 = -0.739532 p3 = -0.966599 p4 = -3.72849
+----------> Iteration 8
+            FVAL = 19.3491698771 Edm = 1.85233427443e-06 Nfcn = 208
+            Error matrix change = 6.9933
+            Parameters :  p0 = -1.36986 p1 = -0.818121 p2 = -0.750985 p3 = -0.981517 p4 = -3.71396
+----------> Iteration 9
+            FVAL = 19.3490598264 Edm = 4.39113996355e-05 Nfcn = 224
+            Error matrix change = 3.68057
+            Parameters :  p0 = -1.3768 p1 = -0.818715 p2 = -0.75197 p3 = -0.981608 p4 = -3.71019
+----------> Iteration 10
+            FVAL = 19.3487353241 Edm = 6.02880150332e-05 Nfcn = 236
+            Error matrix change = 2.04564
+            Parameters :  p0 = -1.39744 p1 = -0.812198 p2 = -0.748134 p3 = -0.970753 p4 = -3.70711
+----------> Iteration 11
+            FVAL = 19.3486524696 Edm = 1.40003751219e-09 Nfcn = 248
+            Error matrix change = 1.06642
+            Parameters :  p0 = -1.39493 p1 = -0.808941 p2 = -0.745293 p3 = -0.966634 p4 = -3.71152
+----------> Iteration 12
+            FVAL = 19.3486524696 Edm = 1.98228119981e-07 Nfcn = 279
+            Error matrix change = 0
+            Parameters :  p0 = -1.39493 p1 = -0.808941 p2 = -0.745293 p3 = -0.966634 p4 = -3.71152
+Minuit2Minimizer : Valid minimum - status = 0
+FVAL  = 19.348652469586991
+Edm   = 1.98228119981072789e-07
+Nfcn  = 279
+jerUp_unc	  = -1.39493	 +/-  0.941706	(limited)
+jesUp_unc	  = -0.808941	 +/-  0.959136	(limited)
+lumi	  = -0.745293	 +/-  0.964864	(limited)
+pdf_unc	  = -0.966634	 +/-  0.942691	(limited)
+xs_Bkg	  = -3.71152	 +/-  0.470369	(limited)
+Reference signal fit
+   0) jerUp_unc                      =  -1.39493
+   1) jesUp_unc                      = -0.808941
+   2) lumi                           = -0.745293
+   3) pdf_unc                        = -0.966634
+   4) xs_Bkg                         =  -3.71152
+
+Fitting of the signal-plus-background hypothesis done in 0.011905 s
+      Evaluation of p-values done in  10.3322 s
+	CLs = 0 +/- 0
+      Evaluation of p-values done in  10.0339 s
+	CLs = 0 +/- 0
+      Evaluation of p-values done in  10.0793 s
+	CLs = 0 +/- 0
+      Evaluation of p-values done in  9.74121 s
+	CLs = 0 +/- 0
+      Evaluation of p-values done in  9.77613 s
+	CLs = 0 +/- 0
+	CLs      = 0 +/- 0
+	CLb      = 0.194 +/- 0.00559221
+	CLsplusb = 0 +/- 0
+
+Hybrid result saved as HypoTestResult_mh120_r5500_2383837064 in higgsCombineTest.HybridNew.mH120.-1870513598.root : higgsCombineTest.HybridNew.mH120.-1870513598.root:/toys
+
+ -- Hybrid New -- 
+CLs = 0 +/- 0
+Total toys: 10000
+Done in 0.00 min (cpu), 0.84 min (real)

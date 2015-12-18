@@ -1,0 +1,202 @@
+>>> including systematics
+>>> using the Profile Likelihood test statistics modified for upper limits (Q_LHC)
+>>> method used to compute upper limit is HybridNew
+>>> random number generator seed is 123456
+Adding /uscms_data/d2/lpcljm/sapta/SUSYSearch/LimitSetting/CMSSW_7_1_5/src to include path
+Adding /cvmfs/cms.cern.ch/slc6_amd64_gcc481/lcg/roofit/5.34.18-cms3//include to include path
+Input workspace 'w': 
+
+RooWorkspace(w) w contents
+
+variables
+---------
+(jerUp_unc,jerUp_unc_In,jesUp_unc,jesUp_unc_In,lumi,lumi_In,n_obs_binbin1,pdf_unc,pdf_unc_In,r,xs_Bkg,xs_Bkg_In)
+
+p.d.f.s
+-------
+SimpleGaussianConstraint::jerUp_unc_Pdf[ x=jerUp_unc mean=jerUp_unc_In sigma=1 ] = 1
+SimpleGaussianConstraint::jesUp_unc_Pdf[ x=jesUp_unc mean=jesUp_unc_In sigma=1 ] = 1
+SimpleGaussianConstraint::lumi_Pdf[ x=lumi mean=lumi_In sigma=1 ] = 1
+RooProdPdf::modelObs_b[ pdf_binbin1_bonly ] = 0.00629369
+RooProdPdf::modelObs_s[ pdf_binbin1 ] = 0.00440286
+RooProdPdf::model_b[ modelObs_b * nuisancePdf ] = 0.00629369
+RooProdPdf::model_s[ modelObs_s * nuisancePdf ] = 0.00440286
+RooProdPdf::nuisancePdf[ lumi_Pdf * jesUp_unc_Pdf * pdf_unc_Pdf * xs_Bkg_Pdf * jerUp_unc_Pdf ] = 1
+RooPoisson::pdf_binbin1[ x=n_obs_binbin1 mean=n_exp_binbin1 ] = 0.00440286
+RooPoisson::pdf_binbin1_bonly[ x=n_obs_binbin1 mean=n_exp_binbin1_bonly ] = 0.00629369
+SimpleGaussianConstraint::pdf_unc_Pdf[ x=pdf_unc mean=pdf_unc_In sigma=1 ] = 1
+SimpleGaussianConstraint::xs_Bkg_Pdf[ x=xs_Bkg mean=xs_Bkg_In sigma=1 ] = 1
+
+functions
+--------
+RooAddition::n_exp_binbin1[ n_exp_binbin1_proc_BH + n_exp_binbin1_proc_Background ] = 37.8443
+RooAddition::n_exp_binbin1_bonly[ n_exp_binbin1_proc_Background ] = 36.8443
+ProcessNormalization::n_exp_binbin1_proc_BH[ thetaList=(lumi,jesUp_unc,pdf_unc) asymmThetaList=() otherFactorList=(r) ] = 1
+ProcessNormalization::n_exp_binbin1_proc_Background[ thetaList=(xs_Bkg,jerUp_unc) asymmThetaList=() otherFactorList=() ] = 36.8443
+
+datasets
+--------
+RooDataSet::data_obs(n_obs_binbin1)
+
+named sets
+----------
+ModelConfig_GlobalObservables:(lumi_In,jesUp_unc_In,pdf_unc_In,xs_Bkg_In,jerUp_unc_In)
+ModelConfig_NuisParams:(lumi,jesUp_unc,pdf_unc,xs_Bkg,jerUp_unc)
+ModelConfig_Observables:(n_obs_binbin1)
+ModelConfig_POI:(r)
+ModelConfig_bonly_GlobalObservables:(lumi_In,jesUp_unc_In,pdf_unc_In,xs_Bkg_In,jerUp_unc_In)
+ModelConfig_bonly_NuisParams:(lumi,jesUp_unc,pdf_unc,xs_Bkg,jerUp_unc)
+ModelConfig_bonly_Observables:(n_obs_binbin1)
+ModelConfig_bonly_POI:(r)
+POI:(r)
+globalObservables:(lumi_In,jesUp_unc_In,pdf_unc_In,xs_Bkg_In,jerUp_unc_In)
+nuisances:(lumi,jesUp_unc,pdf_unc,xs_Bkg,jerUp_unc)
+observables:(n_obs_binbin1)
+
+generic objects
+---------------
+RooStats::ModelConfig::ModelConfig
+RooStats::ModelConfig::ModelConfig_bonly
+RooArgSet::discreteParams
+
+Workspace has a ModelConfig for signal called 'ModelConfig', with contents:
+
+=== Using the following for ModelConfig ===
+Observables:             RooArgSet:: = (n_obs_binbin1)
+Parameters of Interest:  RooArgSet:: = (r)
+Nuisance Parameters:     RooArgSet:: = (lumi,jesUp_unc,pdf_unc,xs_Bkg,jerUp_unc)
+Global Observables:      RooArgSet:: = (lumi_In,jesUp_unc_In,pdf_unc_In,xs_Bkg_In,jerUp_unc_In)
+PDF:                     RooProdPdf::model_s[ modelObs_s * nuisancePdf ] = 0.00440286
+
+Input ModelConfig 'ModelConfig': 
+
+=== Using the following for ModelConfig ===
+Observables:             RooArgSet:: = (n_obs_binbin1)
+Parameters of Interest:  RooArgSet:: = (r)
+Nuisance Parameters:     RooArgSet:: = (lumi,jesUp_unc,pdf_unc,xs_Bkg,jerUp_unc)
+Global Observables:      RooArgSet:: = (lumi_In,jesUp_unc_In,pdf_unc_In,xs_Bkg_In,jerUp_unc_In)
+PDF:                     RooProdPdf::model_s[ modelObs_s * nuisancePdf ] = 0.00440286
+
+[#1] INFO:ObjectHandling -- RooWorkspace::import(w) importing RooUniform::prior
+Computing limit starting from observation
+  1) RooRealVar:: n_obs_binbin1 = 24
+Set default minimizer to Minuit2
+Search for upper limit using pre-computed grid of p-values
+  Do HypoTestResult_mh120_r11_1604020205 -> 11 --> 11
+  Do HypoTestResult_mh120_r37_3103378637 -> 37 --> 37
+  Do HypoTestResult_mh120_r19_3243987003 -> 19 --> 19
+  Do HypoTestResult_mh120_r33_3893327523 -> 33 --> 33
+  Do HypoTestResult_mh120_r21_1299756787 -> 21 --> 21
+  Do HypoTestResult_mh120_r23_1145809036 -> 23 --> 23
+  Do HypoTestResult_mh120_r39_1042843076 -> 39 --> 39
+  Do HypoTestResult_mh120_r27_979423174 -> 27 --> 27
+  Do HypoTestResult_mh120_r29_1301238420 -> 29 --> 29
+  Do HypoTestResult_mh120_r31_3042842945 -> 31 --> 31
+  Do HypoTestResult_mh120_r15_3136133032 -> 15 --> 15
+  Do HypoTestResult_mh120_r13_2213933350 -> 13 --> 13
+  Do HypoTestResult_mh120_r35_4118152357 -> 35 --> 35
+  Do HypoTestResult_mh120_r25_2222862965 -> 25 --> 25
+  Do HypoTestResult_mh120_r41_3100447595 -> 41 --> 41
+  Do HypoTestResult_mh120_r17_3173724983 -> 17 --> 17
+GRID, as is.
+  - 11  (CLs = 0.318783 +/- 0.0154077)
+  - 13  (CLs = 0.262105 +/- 0.0136411)
+  - 15  (CLs = 0.182836 +/- 0.0110055)
+  - 17  (CLs = 0.121173 +/- 0.00898721)
+  - 19  (CLs = 0.0707908 +/- 0.00680725)
+  - 21  (CLs = 0.0424857 +/- 0.00523101)
+  - 23  (CLs = 0.0280146 +/- 0.00415034)
+  - 25  (CLs = 0.0194064 +/- 0.00333782)
+  - 27  (CLs = 0.00622172 +/- 0.00187763)
+  - 29  (CLs = 0.00530973 +/- 0.00177142)
+  - 31  (CLs = 0.00229358 +/- 0.00114719)
+  - 33  (CLs = 0.000562114 +/- 0.000562159)
+  - 35  (CLs = 0 +/- 0)
+  - 37  (CLs = 0 +/- 0)
+  - 39  (CLs = 0 +/- 0)
+  - 41  (CLs = 0 +/- 0)
+Bisecting range [0, 15]
+At r = 25:
+	CLs      = 0.034222 +/- 0.00368993
+	CLb      = 0.5026 +/- 0.00707097
+	CLsplusb = 0.0172 +/- 0.0018387
+
+    Midpoint 7 value 0.034222 +/- 0.00368993
+    Tightening Range
+At r = 17:
+	CLs      = 0.197121 +/- 0.00887754
+	CLb      = 0.5002 +/- 0.00707107
+	CLsplusb = 0.0986 +/- 0.00421611
+
+        Lowpoint 3 value 0.197121 +/- 0.00887754
+At r = 21:
+	CLs      = 0.0817635 +/- 0.00572506
+	CLb      = 0.499 +/- 0.00707105
+	CLsplusb = 0.0408 +/- 0.00279769
+
+        Lowpoint 5 value 0.0817635 +/- 0.00572506
+At r = 23:
+	CLs      = 0.0592417 +/- 0.00483523
+	CLb      = 0.5064 +/- 0.00707049
+	CLsplusb = 0.03 +/- 0.00241247
+
+        Lowpoint 6 value 0.0592417 +/- 0.00483523
+At r = 33:
+	CLs      = 0.00121753 +/- 0.000702949
+	CLb      = 0.4928 +/- 0.00707033
+	CLsplusb = 0.0006 +/- 0.000346306
+
+        Highpoint 11 value 0.00121753 +/- 0.000702949
+At r = 29:
+	CLs      = 0.0106509 +/- 0.00204961
+	CLb      = 0.507 +/- 0.00707037
+	CLsplusb = 0.0054 +/- 0.00103642
+
+        Highpoint 9 value 0.0106509 +/- 0.00204961
+At r = 27:
+	CLs      = 0.0126582 +/- 0.00223752
+	CLb      = 0.5056 +/- 0.00707062
+	CLsplusb = 0.0064 +/- 0.00112774
+
+        Highpoint 8 value 0.0126582 +/- 0.00223752
+Final range [5, 8]
+  Will not use point 0 (r 11)
+  Will not use point 1 (r 13)
+  Will not use point 2 (r 15)
+  Will not use point 3 (r 17)
+  Will not use point 4 (r 19)
+   Point 5 (r 21) was already updated during search.
+   Point 6 (r 23) was already updated during search.
+   Point 7 (r 25) was already updated during search.
+   Point 8 (r 27) was already updated during search.
+  Will not use point 9 (r 29)
+  Will not use point 10 (r 31)
+  Will not use point 11 (r 33)
+  Will not use point 12 (r 35)
+  Will not use point 13 (r 37)
+  Will not use point 14 (r 39)
+  Will not use point 15 (r 41)
+  r 21.00: CLs = 0.0818 +/- 0.0057
+  r 23.00: CLs = 0.0592 +/- 0.0048
+  r 25.00: CLs = 0.0342 +/- 0.0037
+  r 27.00: CLs = 0.0127 +/- 0.0022
+ after scan x ~ 23, bounds [ 21, 27]
+
+ -- HybridNew, before fit -- 
+Limit: r < 23 +/- 4 [21, 27]
+
+****************************************
+Minimizer is Minuit2 / Migrad
+Chi2                      =      9.62113
+NDf                       =            2
+Edm                       =   6.5531e-07
+NCalls                    =           39
+p0                        =         0.05                      	 (fixed)
+p1                        =     -0.27634   +/-   0.0208963   
+p2                        =      23.0383   +/-   0.169823    
+Fit to 4 points: 23.0383 +/- 0.169823
+
+ -- Hybrid New -- 
+Limit: r < 23.0383 +/- 0.169823 @ 95% CL
+Total toys: 0
+Done in 0.00 min (cpu), 0.01 min (real)
