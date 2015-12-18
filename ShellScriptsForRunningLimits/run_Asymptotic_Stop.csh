@@ -1,0 +1,9 @@
+combine -M Asymptotic StopOptimization_Nov20/realistic-counting-experiment_Stop80_45GeV.txt > StopOptimization_Nov20/realistic-counting-experiment_Stop80_45GeV.log
+combine -M Asymptotic StopOptimization_Nov20/realistic-counting-experiment_Stop100_45GeV.txt > StopOptimization_Nov20/realistic-counting-experiment_Stop100_45GeV.log
+combine -M Asymptotic StopOptimization_Nov20/realistic-counting-experiment_Stop120_45GeV.txt > StopOptimization_Nov20/realistic-counting-experiment_Stop120_45GeV.log
+combine -M Asymptotic StopOptimization_Nov20/realistic-counting-experiment_Stop140_45GeV.txt > StopOptimization_Nov20/realistic-counting-experiment_Stop140_45GeV.log
+combine -M Asymptotic StopOptimization_Nov20/realistic-counting-experiment_Stop180_45GeV.txt > StopOptimization_Nov20/realistic-counting-experiment_Stop180_45GeV.log
+combine -M Asymptotic StopOptimization_Nov20/realistic-counting-experiment_Stop160_45GeV.txt > StopOptimization_Nov20/realistic-counting-experiment_Stop160_45GeV.log
+combine -M Asymptotic StopOptimization_Nov20/realistic-counting-experiment_Stop200_45GeV.txt > StopOptimization_Nov20/realistic-counting-experiment_Stop200_45GeV.log
+
+rm roostats* 
