@@ -7,7 +7,7 @@
 #include <TStyle.h>
 #include <TCanvas.h>
 using namespace std;
-void FirstBHMacro::Loop(std::string name, float weight, std::string jecUnc, std::string metListFilename)
+void FirstBHMacro::Loop(std::string name, float weight, std::string jecUnc, std::string jerUnc, std::string metListFilename)
 {
   //@@@@@@@@@@@@@@@@@@@@
   //  SET BRANCHES     @    
@@ -44,7 +44,7 @@ void FirstBHMacro::Loop(std::string name, float weight, std::string jecUnc, std:
   fChain->SetBranchStatus("runno", 1);
   fChain->SetBranchStatus("evtno", 1);
   fChain->SetBranchStatus("lumiblock", 1);
-  fChain->SetBranchStatus("MuPFdBiso", 1);
+  //fChain->SetBranchStatus("MuPFdBiso", 1);
   //variables associated with the output tree
   TFile *outputFile;
   TTree *outputTree;
@@ -204,9 +204,9 @@ void FirstBHMacro::Loop(std::string name, float weight, std::string jecUnc, std:
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       n_start++;
       // Pass Trigger, filters, good vertices
-      if (!firedHLT_PFHT800_v2 || !passed_CSCTightHaloFilter || !passed_goodVertices || !passed_eeBadScFilter) continue;
+      //if (!firedHLT_PFHT800_v2 || !passed_CSCTightHaloFilter || !passed_goodVertices || !passed_eeBadScFilter) continue;
       n_trig++;
-      passMETfilterList=true;
+      /*passMETfilterList=false;
       auto rItr(list.find(runno));
       if (rItr != list.end()) {
         if (rItr->second.find(evtno) != rItr->second.end()){
@@ -219,7 +219,7 @@ void FirstBHMacro::Loop(std::string name, float weight, std::string jecUnc, std:
           }
         }
       if (!passMETfilterList) cout << "ERROR! This event should be filtered!" << endl;
-  
+      */
       njets      -> Fill(NJets);
       nelectrons -> Fill(NElectrons);
       nphotons   -> Fill(NPhotons);
@@ -278,9 +278,21 @@ void FirstBHMacro::Loop(std::string name, float weight, std::string jecUnc, std:
          jetPt = -JecUnc(JetPt[iJet], JetEta[iJet], "JecDown")*JetPt[iJet] + JetPt[iJet];
          jetEt = JetEt[iJet]*(jetPt/JetPt[iJet]);
        }
+       if(jerUnc=="Default") {
+         jetPt = JetPt[iJet]*(1.0 + JerUnc(JetPt[iJet], JetEta[iJet], "Default"));
+         jetEt = JetEt[iJet]*(jetPt/JetPt[iJet]);
+       }
+       else if(jerUnc=="JerUp"){
+         jetPt = JetPt[iJet]*(1.0 + JerUnc(JetPt[iJet], JetEta[iJet], "JerUp"));
+         jetEt = JetEt[iJet]*(jetPt/JetPt[iJet]);
+       }
+       else if(jerUnc=="JerDown"){
+         jetPt = JetPt[iJet]*(1.0 + JerUnc(JetPt[iJet], JetEta[iJet], "JerDown"));
+         jetEt = JetEt[iJet]*(jetPt/JetPt[iJet]);
+       }
        if (jetEt>50.) {
          for (int iMuon = 0; iMuon < NMuons; ++iMuon ) {
-           if (MuEt[iMuon]>50 and MuPFdBiso[iMuon] < 0.15) {
+           if (MuEt[iMuon]>50){// and MuPFdBiso[iMuon] < 0.15) {
              eventHasMuon = true;
              hdR_JetMuo->Fill(dR(JetEta[iJet],JetPhi[iJet], MuEta[iMuon], MuPhi[iMuon]));
              if (jetEt && dR(JetEta[iJet],JetPhi[iJet], MuEta[iMuon], MuPhi[iMuon]) < 0.05) {
@@ -333,9 +345,11 @@ void FirstBHMacro::Loop(std::string name, float weight, std::string jecUnc, std:
         if (!passIso) continue;
         if (debugFlag) cout << "    JetEt for jet number " << iJet << " is: " << jetEt << endl;
         JetEtsum += jetEt; 
+        if(JetEtsum > 20000) cout << "jetEt = " << jetEt << endl;
         JetEtsum_reg += JetEt[iJet];
-        //std::cout << "JetEtsum = " << JetEtsum << std::endl;
-        //std::cout << "JetEtsum_reg = " << JetEtsum_reg << std::endl;
+        if(JetEtsum > 20000) cout << "JetEt[iJet] = " << JetEt[iJet] << endl;
+        std::cout << "JetEtsum = " << JetEtsum << std::endl;
+        std::cout << "JetEtsum_reg = " << JetEtsum_reg << std::endl;
         jet_eT50     -> Fill(jetEt,  weight);
         jet_eta_et50 -> Fill(JetEta[iJet], weight); 
         jet_phi_et50 -> Fill(JetPhi[iJet], weight);
@@ -380,7 +394,7 @@ void FirstBHMacro::Loop(std::string name, float weight, std::string jecUnc, std:
           // Throw away electron if there's an electron/muon overlap.
           for (int iMuon = 0; iMuon < NMuons; ++iMuon ) {
             hdR_EleMuo->Fill(dR(EleEta[iElectron],ElePhi[iElectron], MuEta[iMuon], MuPhi[iMuon]));
-            if (MuEt[iMuon]>50 and MuPFdBiso[iMuon] < 0.15 and dR(EleEta[iElectron],ElePhi[iElectron], MuEta[iMuon], MuPhi[iMuon]) < 0.05) {
+            if (MuEt[iMuon]>50 and dR(EleEta[iElectron],ElePhi[iElectron], MuEta[iMuon], MuPhi[iMuon]) < 0.05){ // and MuPFdBiso[iMuon] < 0.15 and dR(EleEta[iElectron],ElePhi[iElectron], MuEta[iMuon], MuPhi[iMuon]) < 0.05) {
               passIso = false;
               if (debugFlag) {
                 sprintf(messageBuffer, "Electron number %d failed isolation with Muon number %d  in run number %d lumi section %d event number %lld\n", iElectron, iMuon, runno, lumiblock, evtno);
@@ -416,7 +430,7 @@ void FirstBHMacro::Loop(std::string name, float weight, std::string jecUnc, std:
           if (!passIso) continue;
           for (int iMuon = 0; iMuon < NMuons; ++iMuon ) {
             hdR_PhoMuo->Fill(dR(PhEta[iPhoton], PhPhi[iPhoton], MuEta[iMuon], MuPhi[iMuon]));
-            if (MuEt[iMuon]>50 and MuPFdBiso[iMuon] < 0.15 and dR(PhEta[iPhoton], PhPhi[iPhoton], MuEta[iMuon], MuPhi[iMuon]) < 0.05) {
+            if (MuEt[iMuon]>50 and dR(PhEta[iPhoton], PhPhi[iPhoton], MuEta[iMuon], MuPhi[iMuon]) < 0.05) { //and MuPFdBiso[iMuon] < 0.15 and dR(PhEta[iPhoton], PhPhi[iPhoton], MuEta[iMuon], MuPhi[iMuon]) < 0.05) {
               if (debugFlag) {
                 sprintf(messageBuffer, "Photon number %d failed isolation with Muon number %d  in run number %d lumi section %d event number %lld\n", iPhoton, iMuon, runno, lumiblock, evtno);
                 cout << messageBuffer;
@@ -453,7 +467,7 @@ void FirstBHMacro::Loop(std::string name, float weight, std::string jecUnc, std:
   if (eventHasMuon) {
       for (int iMuon = 0; iMuon < NMuons; ++iMuon) {
         passIso=true;
-        if (MuEt[iMuon]>50. and MuPFdBiso[iMuon] < 0.15) {
+        if (MuEt[iMuon]>50.) {// and MuPFdBiso[iMuon] < 0.15) {
           if (debugFlag) cout << "    MuEt for muon number " << iMuon << " is: " << MuEt[iMuon] << endl;
           MuoEtsum += MuEt[iMuon];
           n_muo_et50++;
@@ -525,15 +539,10 @@ void FirstBHMacro::Loop(std::string name, float weight, std::string jecUnc, std:
   N_vs_ST->Fill(etsum, n_et50, weight);
   multiplicity->Fill(n_et50,  weight);
   ST->Fill(etsum, weight);
-  //if(n_et50 >= 8 and etsum > 1000.0 and debugFlagMETList) sprintf(messageBuffer, "Event number high multiplicity %lld, %d, %d, with ST = %f and MetEtsum = %f + JetEtsum = %f + EleEtsum = %f + PhoEtsum = %f + MuoEtsum = %f and multiplicity = %d", evtno, lumiblock, runno, etsum, MetEtsum, JetEtsum, EleEtsum, PhoEtsum, MuoEtsum, n_et50);
-  //cout << messageBuffer;
-  //if(etsum > 5000.0 and debugFlagMETList) sprintf(messageBuffer, "Event number low multiplicity and high ST %lld, %d, %d, with ST = %f and MetEtsum = %f + JetEtsum = %f + EleEtsum = %f + PhoEtsum = %f + MuoEtsum = %f and multiplicity = %d", evtno, lumiblock, runno, etsum, MetEtsum, JetEtsum, EleEtsum, PhoEtsum, MuoEtsum, n_et50);     
-  //cout << messageBuffer; 
-  if(n_et50 >= 8 and etsum > 1000.0) cout << "Event number high multiplicity = " << evtno << " Lumi Section = " << lumiblock << " Run number " << runno << " with jets: " << n_et50 << " ST = " << etsum << " etsum  = MetEtsum + JetEtsum + EleEtsum + PhoEtsum + MuoEtsum "<< " , " << MetEtsum << " , "  << JetEtsum << " , " << EleEtsum << " , " << PhoEtsum << " , " << MuoEtsum << endl;
-  if(etsum > 5000.0) cout << "Event number low multiplicity and high ST = " << evtno << " Lumi Section = " << lumiblock << " Run number " << runno << " with jets: " << n_et50 << " ST = " << etsum << " etsum  = MetEtsum + JetEtsum + EleEtsum + PhoEtsum + MuoEtsum "<< " , " << MetEtsum << " , "  << JetEtsum << " , " << EleEtsum << " , " << PhoEtsum << " , " << MuoEtsum << endl;
+  //if(n_et50 >= 10 and etsum > 20000.0) cout << "Event number high multiplicity = " << evtno << " Lumi Section = " << lumiblock << " Run number " << runno << " with jets: " << n_et50 << " ST = " << etsum << " etsum  = MetEtsum + JetEtsum + EleEtsum + PhoEtsum + MuoEtsum "<< " , " << MetEtsum << " , "  << JetEtsum << " , " << EleEtsum << " , " << PhoEtsum << " , " << MuoEtsum << endl;
+  if(n_et50 >= 10 and etsum > 20000.0) cout << "JetEtsum = " << JetEtsum << endl;
+  //if(etsum > 5000.0) cout << "Event number low multiplicity and high ST = " << evtno << " Lumi Section = " << lumiblock << " Run number " << runno << " with jets: " << n_et50 << " ST = " << etsum << " etsum  = MetEtsum + JetEtsum + EleEtsum + PhoEtsum + MuoEtsum "<< " , " << MetEtsum << " , "  << JetEtsum << " , " << EleEtsum << " , " << PhoEtsum << " , " << MuoEtsum << endl;
   
-  //if(etsum < 1000.0) continue;
-
   if(n_et50 >= 2) {ST_N2_inc -> Fill(etsum, weight); } if(n_pt50 >= 2){HT_N2_inc -> Fill(ptsum, weight);}
   if(n_et50 >= 3) {ST_N3_inc -> Fill(etsum, weight); } if(n_pt50 >= 3){HT_N3_inc -> Fill(ptsum, weight);}
   if(n_et50 >= 4) {ST_N4_inc -> Fill(etsum, weight); } if(n_pt50 >= 4){HT_N4_inc -> Fill(ptsum, weight);}
@@ -559,9 +568,9 @@ void FirstBHMacro::Loop(std::string name, float weight, std::string jecUnc, std:
   n_multiplicity = n_et50;
   n_total++;
   weightTree = 1.00;
-  //weightTree = (1064.0*1280.0)/(4963895.0);
-  //weightTree = (121.5*1280.0)/(3868886.0);
-  //weightTree = (25.4*1280.0)/(1961774.0);
+  //weightTree = (1064.0*2180.0)/(4963895.0);
+  //weightTree = (121.5*2180.0)/(3868886.0);
+  //weightTree = (25.4*2180.0)/(1961774.0);
   outputTree->Fill();
   //if(n_total ==100)break;
    } //Event Loop

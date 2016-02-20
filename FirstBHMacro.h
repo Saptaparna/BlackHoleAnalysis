@@ -17,6 +17,7 @@
 #include <TChain.h>
 #include <TFile.h>
 #include <TMath.h>
+#include <TRandom.h>
 // Header file for the classes stored in the TTree if any.
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
@@ -202,7 +203,7 @@ public :
    TBranch        *b_evtno;   //!
    TBranch        *b_lumiblock;   //!
    TBranch        *b_isRealData;   //!
-   TBranch        *b_firedHLT_PFHT400_v1;   //!
+   TBranch        *b_firedHLT_PFHT400_v2;   //!
    TBranch        *b_firedHLT_PFHT475_v2;   //!
    TBranch        *b_firedHLT_PFHT600_v2;   //!
    TBranch        *b_firedHLT_PFHT650_v2;   //!
@@ -210,17 +211,18 @@ public :
    TBranch        *b_passed_CSCTightHaloFilter ;
    TBranch        *b_passed_goodVertices       ;
    TBranch        *b_passed_eeBadScFilter      ;
-   TBranch        *b_MuPFdBiso;
+   //TBranch        *b_MuPFdBiso;
    FirstBHMacro(TTree *tree=0);
    virtual ~FirstBHMacro();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
-   virtual void     Loop(std::string name, float weight, std::string jecUnc, std::string metListFilename); 
+   virtual void     Loop(std::string name, float weight, std::string jecUnc, std::string jerUnc, std::string metListFilename); 
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
    float JecUnc(double jetPt, double jetEta, std::string jecUnc);
+   float JerUnc(double jetpT, double jetEta, std::string jerUnc);
    void fillJECUncVector();
    
 private:
@@ -236,17 +238,27 @@ private:
 #ifdef FirstBHMacro_cxx
 FirstBHMacro::FirstBHMacro(TTree *tree) : fChain(0) 
 {
-// if parameter tree is not specified (or zero), connect the file
-// used to generate this class and read the Tree.
    if (tree == 0) {
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/afs/cern.ch/user/s/sapta/BlackHoleAnalysis/CMSSW_7_4_5/src/AnalysisScripts/BayesianBlocks/BlackMaxLHArecord_BH1_BM_MD4000_MBH11000_n6_NTuple.root");
+      //TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("all2015C.root");
+      //TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("BlackMaxLHArecord_BH1_BM_MD4000_MBH11000_n6_NTuple.root");
       //TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("ntuple_output_1.root");
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/allMyData.root"); 
+      //TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/QCD_HT-1500_2000_25ns.root");
+      //TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/allMyData.root"); 
       if (!f || !f->IsOpen()) {
-         f = new TFile("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/allMyData.root");
-         //f = new TFile("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/QCD_HT-1000_1500_25ns.root");
+         //f = new TFile("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/allMyData.root");
+         //f = new TFile("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/QCD_HT-1500_2000_25ns.root");
+         //f = new TFile("ntuple_output_1.root");
+         //f = new TFile("BlackMaxLHArecord_BH1_BM_MD4000_MBH11000_n6_NTuple.root");
+         //f = new TFile("all2015C.root");
+         f = new TFile("/afs/cern.ch/user/s/sapta/BlackHoleAnalysis/CMSSW_7_4_5/src/AnalysisScripts/BayesianBlocks/BlackMaxLHArecord_BH1_BM_MD4000_MBH11000_n6_NTuple.root");
       }
-      TDirectory * dir = (TDirectory*)f->Get("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/allMyData.root:/bhana");
-      //TDirectory * dir = (TDirectory*)f->Get("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/QCD_HT-1000_1500_25ns.root:/bhana");
+      TDirectory * dir = (TDirectory*)f->Get("/afs/cern.ch/user/s/sapta/BlackHoleAnalysis/CMSSW_7_4_5/src/AnalysisScripts/BayesianBlocks/BlackMaxLHArecord_BH1_BM_MD4000_MBH11000_n6_NTuple.root:/bhana");
+      //TDirectory * dir = (TDirectory*)f->Get("all2015C.root:/bhana");
+      //TDirectory * dir = (TDirectory*)f->Get("BlackMaxLHArecord_BH1_BM_MD4000_MBH8000_n6_NTuple.root:/bhana");
+      //TDirectory * dir = (TDirectory*)f->Get("ntuple_output_1.root:/bhana");
+      //TDirectory * dir = (TDirectory*)f->Get("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/allMyData.root:/bhana");
+      //TDirectory * dir = (TDirectory*)f->Get("/afs/cern.ch/work/s/sapta/private/BlackHoleAnalysis/CMSSW_7_4_14/src/QCD_HT-1500_2000_25ns.root:/bhana");
       dir->GetObject("t",tree);
    }
    Init(tree);
@@ -370,7 +382,7 @@ void FirstBHMacro::Init(TTree *tree)
    fChain->SetBranchAddress("passed_CSCTightHaloFilter", &passed_CSCTightHaloFilter, &b_passed_CSCTightHaloFilter);
    fChain->SetBranchAddress("passed_goodVertices", &passed_goodVertices, &b_passed_goodVertices);
    fChain->SetBranchAddress("passed_eeBadScFilter", &passed_eeBadScFilter, &b_passed_eeBadScFilter);
-   fChain->SetBranchAddress("MuPFdBiso", &MuPFdBiso, &b_MuPFdBiso);
+   //fChain->SetBranchAddress("MuPFdBiso", &MuPFdBiso, &b_MuPFdBiso);
    Notify();
 }
 
@@ -465,6 +477,131 @@ Float_t FirstBHMacro::JecUnc(double jetpT, double jetEta, std::string jecUnc)
   }
   
   return corr;
+}
+
+Float_t FirstBHMacro::JerUnc(double jetpT, double jetEta, std::string jerUnc)
+{
+  if(fabs(jetEta)>5.4) {return -999;}
+
+  double sf = 0.0;
+  double corr = 0.0;
+  if(fabs(jetEta)>0.0 and fabs(jetEta)<=0.8)
+  {
+    sf = 1.061; 
+    if(jetpT>=50 and jetpT<100){
+      if(jerUnc=="JerUp")corr = 0.09;
+      if(jerUnc=="JerDown") corr = -0.09;
+      if(jerUnc=="Default") corr = 0.0;
+    }
+    if(jetpT>=100 and jetpT<200){
+      if(jerUnc=="JerUp")corr = 0.07;
+      if(jerUnc=="JerDown") corr = -0.07;
+      if(jerUnc=="Default") corr = 0.0;
+    }
+    if(jetpT>=200 and jetpT<500){
+      if(jerUnc=="JerUp")corr = 0.06;
+      if(jerUnc=="JerDown") corr = -0.06;
+      if(jerUnc=="Default") corr = 0.0;
+    }
+    if(jetpT>=500){
+      if(jerUnc=="JerUp")corr = 0.05;
+      if(jerUnc=="JerDown") corr = -0.05;
+      if(jerUnc=="Default") corr = 0.0;
+    }
+  }
+  else if(fabs(jetEta)>0.8 and fabs(jetEta)<=1.3)
+  {
+    sf = 1.088;
+    if(jetpT>=50 and jetpT<100){    
+      if(jerUnc=="JerUp") corr = 0.11;
+      if(jerUnc=="JerDown") corr = -0.11;
+      if(jerUnc=="Default") corr = 0.0;
+    }
+    else if(jetpT>=100 and jetpT<200){  
+      if(jerUnc=="JerUp") corr = 0.075;
+      if(jerUnc=="JerDown") corr = -0.075;
+      if(jerUnc=="Default") corr = 0.0;
+    }
+    else if(jetpT>=200 and jetpT<500){
+      if(jerUnc=="JerUp") corr = 0.07;
+      if(jerUnc=="JerDown") corr = -0.07;
+      if(jerUnc=="Default") corr = 0.0;
+    }
+    else if(jetpT>=500){
+      if(jerUnc=="JerUp") corr = 0.06;
+      if(jerUnc=="JerDown") corr = -0.06;
+      if(jerUnc=="Default") corr = 0.0;
+    }
+  }
+  else if(fabs(jetEta)>1.3 and fabs(jetEta)<=1.9)
+  {
+    sf = 1.106;
+    if(jetpT>=50 and jetpT<100){
+      if(jerUnc=="JerUp") corr = 0.13;
+      if(jerUnc=="JerDown") corr = -0.13;
+      if(jerUnc=="Default") corr = 0.0;
+    }
+    else if(jetpT>=100 and jetpT<200){
+      if(jerUnc=="JerUp") corr = 0.07;
+      if(jerUnc=="JerDown") corr = -0.07;
+      if(jerUnc=="Default") corr = 0.0;
+    }
+    else if(jetpT>=200){
+      if(jerUnc=="JerUp") corr = 0.06;
+      if(jerUnc=="JerDown") corr = -0.06;
+      if(jerUnc=="Default") corr = 0.0;
+    }
+  }
+  else if(fabs(jetEta)>1.9 and fabs(jetEta)<=2.5)
+  {
+    sf = 1.126;
+    if(jetpT>=50 and jetpT<100){
+      if(jerUnc=="JerUp") corr = 0.094;
+      if(jerUnc=="JerDown") corr = -0.094;
+      if(jerUnc=="Default") corr = 0.0;
+    }
+    else if(jetpT>=100 and jetpT<200){
+      if(jerUnc=="JerUp") corr = 0.07;
+      if(jerUnc=="JerDown") corr = -0.07;
+      if(jerUnc=="Default") corr = 0.0;
+    }   
+    else if(jetpT>=200){
+      if(jerUnc=="JerUp") corr = 0.05;
+      if(jerUnc=="JerDown") corr = -0.05;
+      if(jerUnc=="Default") corr = 0.0;
+    }
+  }
+  else if(fabs(jetEta)>2.5 and fabs(jetEta)<=3.0)
+  {
+    sf = 1.343;
+    if(jetpT>=50 and jetpT<100){ 
+      if(jerUnc=="JerUp") corr = 0.09;
+      if(jerUnc=="JerDown") corr = -0.09;
+      if(jerUnc=="Default") corr = 0.0;
+    }
+    else if(jetpT>=100){
+      if(jerUnc=="JerUp") corr = 0.07;
+      if(jerUnc=="JerDown") corr = -0.07;
+      if(jerUnc=="Default") corr = 0.0; 
+    }
+  }
+  else if(fabs(jetEta)>3.0 and fabs(jetEta)<=3.2)
+  {
+    sf = 1.303;
+    if(jerUnc=="JerUp") corr = 0.15;
+    if(jerUnc=="JerDown") corr = -0.15;
+    if(jerUnc=="Default") corr = 0.0;
+  }
+  else if(fabs(jetEta)>3.2 and fabs(jetEta)<=5.0) 
+  {
+    sf = 1.320;
+    if(jerUnc=="JerUp") corr = 0.120;
+    if(jerUnc=="JerDown") corr = -0.120;
+    if(jerUnc=="Default") corr = 0.0;
+  }
+  
+  return gRandom->Gaus(0, corr*TMath::Sqrt(sf*sf - 1));
+  //return gRandom->Gaus(0, corr*TMath::Sqrt(sf*sf - 1));
 }
 
 std::map<unsigned, std::set<unsigned> > readEventList(char const* _fileName) {
